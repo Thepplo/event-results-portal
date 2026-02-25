@@ -74,7 +74,6 @@ async function run() {
 
   const loadBtn = document.getElementById("loadBtn");
 
-  // Prevent attaching multiple click handlers if run() is called again
   if (!loadBtn.dataset.bound) {
     loadBtn.dataset.bound = "1";
     loadBtn.addEventListener("click", async () => {
@@ -112,3 +111,7 @@ async function run() {
   teams.sort((a, b) => (b.totalScore ?? 0) - (a.totalScore ?? 0));
   app.innerHTML = teams.map(renderTeam).join("");
 }
+
+run().catch(err => {
+  document.getElementById("app").textContent = `Error: ${err.message}`;
+});
