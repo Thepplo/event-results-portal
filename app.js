@@ -242,7 +242,16 @@ function drawTopWords(wordCounts, topN = 10) {
       responsive: true,
       plugins: { legend: { display: false } },
       scales: {
-        x: { beginAtZero: true, ticks: { precision: 0 } }
+        x: { beginAtZero: true, 
+          ticks: {
+           precision: 0,
+           color: "var(--text)",
+            font: {
+            family: "'Montserrat', sans-serif",
+            size: 14,
+            weight: "600"
+          }
+          } }
       }
     }
   });
@@ -473,7 +482,7 @@ async function run() {
     ${renderDonutCharts(teams, DONUT_TASK_IDS)} 
 
     <div class="card">
-      <h2>Satisfaction</h2>
+      <h2>How satisfied are you with the overall outcome of your team (1-5)?</h2>
       <canvas id="satChart" height="120"></canvas>
     </div>
 
@@ -483,7 +492,6 @@ async function run() {
     </div>
   `;
 
-  // Then draw charts (after canvases exist)
   drawCorrectBarChart(correctRows);
   drawSatisfactionChart(ratingCounts);
   drawTopWords(wordCounts);
