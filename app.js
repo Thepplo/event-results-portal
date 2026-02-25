@@ -1,11 +1,20 @@
 const WORKER_BASE = "https://gentle-darkness-f7c5.theo-4e3.workers.dev";
+
+const DONUT_TASK_IDS = [
+  "Tj4VO5V_f",
+  "teu-Hoocx",
+  "hynVN5lkv",
+  "dbO09epte",
+];
+
+const MIXED_TASK_ID = "c7CRRaGrZ";
+
+
 const INCLUDED_TASK_IDS = new Set([
   "Tj4VO5V_f",
   "teu-Hoocx",
   "hynVN5lkv",
   "dbO09epte",
-  "c7CRRaGrZ"
-  
 ]);
 
 
@@ -81,15 +90,172 @@ function aggregateOptionsByTask(teams, includedTaskIds) {
   return agg;
 }
 
-function renderTaskCharts(teams) {
-  const taskAgg = aggregateOptionsByTask(teams, (typeof INCLUDED_TASK_IDS !== "undefined" ? INCLUDED_TASK_IDS : null));
+function collectAllTaskIds(teams) {
+  const set = new Set();
+  for (const t of teams) {
+    for (const a of (t.answers || [])) {
+      if (a.taskId) set.add(a.taskId);
+    }
+  }
+  return set;
+}
 
-  if (!taskAgg.size) {
+function deriveRestTaskIdSet(teams) {
+  const all = collectAllTaskIds(teams);
+  for (const id of DONUT_TASK_IDS) all.delete(id);
+  all.delete(MIXED_TASK_ID);
+  return all;
+}
+
+function computeCorrectCountPerTeam(teams, restTaskIdsSet) {
+  return teams.map(t => {
+    const correct = (t.answers || []).reduce((sum, a) => {
+      if (!a.taskId) return sum;
+      if (!restTaskIdsSet.has(a.taskId)) return sum;
+      return sum + (a.correct === true ? 1 : 0);
+    }, 0);
+
+    return {
+      teamId: t.id,
+      teamName: t.name || t.members?.[0] || "Team",
+      correctCount: correct,
+    };
+  });
+}
+function parseRatingAndWordFromString(answer) {
+  const s = String(answer ?? "").trim();
+  if (!s) return { rating: null, word: "" };
+
+  const m = s.match(/^(\d+)\s*(.*)$/);
+  if (!m) return { rating: null, word: s };
+
+  const rating = parseInt(m[1], 10);
+  const word = (m[2] || "").trim();
+
+  return {
+    rating: Number.isFinite(rating) ? rating : null,
+    word,
+  };
+}
+
+function aggregateMixedTask(teams) {
+  const ratingCounts = new Map([[1,0],[2,0],[3,0],[4,0],[5,0]]);
+  const wordCounts = new Map();
+
+  for (const t of teams) {
+    const a = (t.answers || []).find(x => x.taskId === MIXED_TASK_ID);
+    if (!a) continue;
+
+    const { rating, word } = parseRatingAndWordFromString(a.answer);
+
+    if (ratingCounts.has(rating)) {
+      ratingCounts.set(rating, ratingCounts.get(rating) + 1);
+    }
+
+    const cleaned = (word || "")
+      .toLowerCase()
+      .trim()
+      .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, ""); // trim punctuation
+
+    if (cleaned) wordCounts.set(cleaned, (wordCounts.get(cleaned) || 0) + 1);
+  }
+
+  return { ratingCounts, wordCounts };
+}
+function drawCorrectBarChart(correctRows) {
+  const el = document.getElementById("barCorrect");
+  if (!el) return;
+
+  const sorted = [...correctRows].sort((a,b) => b.correctCount - a.correctCount);
+
+  new Chart(el, {
+    type: "bar",
+    data: {
+      labels: sorted.map(r => r.teamName),
+      datasets: [{
+        label: "Correct tasks (rest)",
+        data: sorted.map(r => r.correctCount),
+        backgroundColor: sorted.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        borderColor: "#ffffff",
+        borderWidth: 2,
+      }],
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { precision: 0 } }
+      }
+    }
+  });
+}
+function drawSatisfactionChart(ratingCounts) {
+  const el = document.getElementById("satChart");
+  if (!el) return;
+
+  const labels = [1,2,3,4,5].map(String);
+  const values = [1,2,3,4,5].map(k => ratingCounts.get(k) || 0);
+
+  new Chart(el, {
+    type: "bar",
+    data: {
+      labels,
+      datasets: [{
+        label: "Satisfaction (1–5)",
+        data: values,
+        backgroundColor: labels.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        borderColor: "#ffffff",
+        borderWidth: 2,
+      }],
+    },
+    options: {
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, ticks: { precision: 0 } }
+      }
+    }
+  });
+}
+function drawTopWords(wordCounts, topN = 10) {
+  const el = document.getElementById("wordChart");
+  if (!el) return;
+
+  const pairs = Array.from(wordCounts.entries())
+    .sort((a,b) => b[1] - a[1])
+    .slice(0, topN);
+
+  new Chart(el, {
+    type: "bar",
+    data: {
+      labels: pairs.map(p => p[0]),
+      datasets: [{
+        label: "Top words",
+        data: pairs.map(p => p[1]),
+        backgroundColor: pairs.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        borderColor: "#ffffff",
+        borderWidth: 2,
+      }],
+    },
+    options: {
+      indexAxis: "y",
+      responsive: true,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true, ticks: { precision: 0 } }
+      }
+    }
+  });
+}
+function renderDonutCharts (teams) {
+  const donutAgg = aggregateOptionsByTask(teams, new Set(DONUT_TASK_IDS));
+
+  if (!donutAgg.size) {
     return `<div class="card"><h3>Survey Charts</h3><p class="muted">No answers found for selected tasks.</p></div>`;
   }
 
   const blocks = [];
-  for (const [taskId, optionMap] of taskAgg.entries()) {
+  for (const [taskId, optionMap] of donutAgg.entries()) {
     const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
     blocks.push(`
       <div class="card">
@@ -111,8 +277,8 @@ function renderTaskCharts(teams) {
   return `<div class="card"><h2>Survey Results</h2><p class="muted">Distribution of selected options per task.</p></div>${blocks.join("")}`;
 }
 
-function drawTaskCharts(teams) {
-  const taskAgg = aggregateOptionsByTask(teams, (typeof INCLUDED_TASK_IDS !== "undefined" ? INCLUDED_TASK_IDS : null));
+function drawDonutCharts(teams, taskIds) {
+  const taskAgg = aggregateOptionsByTask(teams, taskIds);
 
   for (const [taskId, optionMap] of taskAgg.entries()) {
     const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
@@ -293,11 +459,35 @@ async function run() {
     return;
   }
 
-  teams.sort((a, b) => (b.totalScore ?? 0) - (a.totalScore ?? 0));
+  const restTaskIdsSet = deriveRestTaskIdSet(teams);
+  const correctRows = computeCorrectCountPerTeam(teams, restTaskIdsSet);
 
-  app.innerHTML = renderTaskCharts(teams) + teams.map(renderTeam).join("");
+  const { ratingCounts, wordCounts } = aggregateMixedTask(teams);
 
-  drawTaskCharts(teams);
+  app.innerHTML = `
+    <div class="card">
+      <h2>Correct tasks per person</h2>
+      <canvas id="barCorrect" height="140"></canvas>
+    </div>
+
+    ${renderDonutCharts(teams, DONUT_TASK_IDS)} 
+
+    <div class="card">
+      <h2>Satisfaction</h2>
+      <canvas id="satChart" height="120"></canvas>
+    </div>
+
+    <div class="card">
+      <h2>One-word experience</h2>
+      <canvas id="wordChart" height="180"></canvas>
+    </div>
+  `;
+
+  // Then draw charts (after canvases exist)
+  drawCorrectBarChart(correctRows);
+  drawSatisfactionChart(ratingCounts);
+  drawTopWords(wordCounts);
+  drawDonutCharts(teams, DONUT_TASK_IDS);
 }
 
 run().catch(err => {
