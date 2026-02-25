@@ -16,6 +16,15 @@ const TASK_LABELS = {
 
  };
 
+const CHART_COLORS = [
+  "#ffda33",
+  "#2d52b5",
+  "#3e95eb",
+  "#770136",
+  "#e53846",
+
+];
+
 function normalizeAnswerToOptions(answer) {
   if (answer === null || answer === undefined) return [];
 
@@ -132,7 +141,18 @@ function drawTaskCharts(teams) {
       type: "doughnut",
       data: {
         labels: finalLabels,
-        datasets: [{ data: finalValues }],
+        datasets: [{
+          data: finalValues,
+
+          backgroundColor: finalLabels.map((_, i) =>
+            CHART_COLORS[i % CHART_COLORS.length]
+          ),
+
+          borderColor: "#4A4046",
+          borderWidth: 1,
+
+          hoverOffset: 8
+        }],
       },
       options: {
         responsive: true,
