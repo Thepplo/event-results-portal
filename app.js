@@ -7,6 +7,14 @@ const INCLUDED_TASK_IDS = new Set([
   "c7CRRaGrZ"
   
 ]);
+const TASK_LABELS = { 
+  "Tj4VO5V_f": "What was your goal based on the brief (Multiple Choice)?",
+  "teu-Hoocx": "What was your strategy (Multiple Choice)?",
+  "hynVN5lkv": "How well did you execute the strategy (1-5)?",
+  "dbO09epte": "How would you score your team's communication during the mission (1-5)?",
+  "c7CRRaGrZ": "How satisfied are you with the overall outcome of your team (1-5)?"
+
+ };
 
 function normalizeAnswerToOptions(answer) {
   if (answer === null || answer === undefined) return [];
@@ -75,7 +83,7 @@ function renderTaskCharts(teams) {
     const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
     blocks.push(`
       <div class="card">
-        <h3>Task: <code>${taskId}</code></h3>
+        <h3>Question: ${TASK_LABELS[taskId] || taskId}</h3>
         <div style="max-width:520px;">
           <canvas id="${canvasId}" height="260"></canvas>
         </div>
