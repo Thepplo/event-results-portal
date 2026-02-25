@@ -73,18 +73,26 @@ async function run() {
   const teamId = params.get("teamId");
 
   const loadBtn = document.getElementById("loadBtn");
-  loadBtn.addEventListener("click", async () => {
-    const g = document.getElementById("gameIdInput").value.trim();
-    const t = document.getElementById("teamIdInput").value.trim();
-    if (!g) return alert("gameId is required");
-    setQueryParams({ gameId: g, teamId: t || "" });
-    await run();
-  });
+
+  // Prevent attaching multiple click handlers if run() is called again
+  if (!loadBtn.dataset.bound) {
+    loadBtn.dataset.bound = "1";
+    loadBtn.addEventListener("click", async () => {
+      const g = document.getElementById("gameIdInput").value.trim();
+      const t = document.getElementById("teamIdInput").value.trim();
+      if (!g) return alert("gameId is required");
+      setQueryParams({ gameId: g, teamId: t || "" });
+      await run();
+    });
+  }
 
   if (!gameId) {
     app.textContent = "Enter a gameId above or open this page with ?gameId=...";
     return;
   }
+
+  app.textContent = "Loading…";
+  const data = await fetchResults({ gameId, teamId });
 
   if (data.team) {
     if (!data.team) {
@@ -102,10 +110,5 @@ async function run() {
   }
 
   teams.sort((a, b) => (b.totalScore ?? 0) - (a.totalScore ?? 0));
-
   app.innerHTML = teams.map(renderTeam).join("");
 }
-
-run().catch(err => {
-  document.getElementById("app").textContent = `Error: ${err.message}`;
-});
