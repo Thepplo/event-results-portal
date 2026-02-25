@@ -103,7 +103,7 @@ h1 {
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     background-color: rgb(var(--primary));
-    color: var(--text);
+    color: #1A1418;
     border-radius: 0.5rem;
     transition: background-color 0.2s ease, 
                 box-shadow 0.2s ease, 
