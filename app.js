@@ -1,4 +1,13 @@
 const WORKER_BASE = "https://gentle-darkness-f7c5.theo-4e3.workers.dev";
+const INCLUDED_TASK_IDS = new Set([
+  "Tj4VO5V_f",
+  "teu-Hoocx",
+  "hynVN5lkv",
+  "dbO09epte",
+  "c7CRRaGrZ"
+  
+]);
+
 
 function qs() {
   return new URLSearchParams(location.search);
@@ -33,7 +42,10 @@ async function fetchResults({ gameId, teamId }) {
 }
 
 function renderTeam(team) {
-  const answers = team.answers || [];
+  const allAnswers = team.answers || [];
+  const answers = INCLUDED_TASK_IDS.size
+  ? allAnswers.filter(a => INCLUDED_TASK_IDS.has(a.taskId))
+  : allAnswers;
   return `
     <div class="card">
       <h2>${team.name ?? "Team"}</h2>
