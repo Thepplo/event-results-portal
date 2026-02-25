@@ -1,8 +1,51 @@
+:root {
+    /* bg gradient */
+    --bg-top: #2A2228;
+    --bg-bottom: #1A1418;
+
+    --glass-bg: rgba(30, 22, 26, 0.75);
+    --glass-border: rgba(255, 255, 255, 0.08);
+
+    /* surfaces */
+    --surface: #3A3237;      /* main container */
+    --surface-2: #332B30;    /* inputs / table head */
+    --card: #342C31;         /* cards */
+    --hover: #453c42;
+    --border: #4A4046;
+    --border-hover: #5A4A51;
+    --surface-alt: #3F353B; /* for alternating rows or sections */
+    --divide-border: rgba(255,255,255,0.1);
+    
+    /* Text */
+    --text: #F3EDEE;
+    --text-muted: #d9d1d3;
+    --text-dim: #A89CA2;
+    --text-danger: 224 122 128;
+    --text-danger-light: 255 208 211;
+
+    /* event accents */
+    --primary: 177 18 23;   /*  #b11217 */
+    --primary-hover: 196 23 29;  /*  #c4171d */
+    --primary-dark: 143 14 18;   /*  #8f0e12 */
+
+    /* semantic colors */
+    --success: 46 160 67;
+    --warning: 217 166 62;
+    --danger: 177 18 23;
+
+    /* admin role accent */
+    --admin: 124 58 237;
+
+    --border-strong: rgba(255,255,255,0.16);
+    --shadow-card: 0 25px 50px rgba(0,0,0,0.45);
+}
+
 body {
     font-family: system-ui, sans-serif; 
     max-width: 900px; 
     margin: 24px auto; 
-    padding: 0 16px; 
+    padding: 0 16px;
+    background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
 }
 
 .card { 
