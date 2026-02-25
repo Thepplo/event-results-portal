@@ -17,12 +17,11 @@ const TASK_LABELS = {
  };
 
 const CHART_COLORS = [
-  "#ffda33",
   "#2d52b5",
+  "#ffda33",
+  "#e53846",
   "#3e95eb",
   "#770136",
-  "#e53846",
-
 ];
 
 function normalizeAnswerToOptions(answer) {
@@ -151,7 +150,7 @@ function drawTaskCharts(teams) {
           borderColor: "#4A4046",
           borderWidth: 1,
 
-          hoverOffset: 8
+          hoverOffset: 2
         }],
       },
       options: {
