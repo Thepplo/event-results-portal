@@ -89,6 +89,13 @@ function aggregateOptionsByTask(teams, includedTaskIds) {
 
   return agg;
 }
+function buildBarRowsFromAnswersScore(teams) {
+  return teams.map(t => ({
+    teamId: t.id,
+    teamName: t.name || t.members?.[0] || "Team",
+    score: Number(t.answersScore) || 0,
+  }));
+}
 
 function collectAllTaskIds(teams) {
   const set = new Set();
@@ -122,6 +129,7 @@ function computeCorrectCountPerTeam(teams, restTaskIdsSet) {
     };
   });
 }
+
 function parseRatingAndWordFromString(answer) {
   const s = String(answer ?? "").trim();
   if (!s) return { rating: null, word: "" };
@@ -162,21 +170,21 @@ function aggregateMixedTask(teams) {
 
   return { ratingCounts, wordCounts };
 }
-function drawCorrectBarChart(correctRows) {
+function drawAnswersScoreBarChart(teams) {
   const el = document.getElementById("barCorrect");
   if (!el) return;
 
-  const sorted = [...correctRows].sort((a,b) => b.correctCount - a.correctCount);
+  const rows = buildBarRowsFromAnswersScore(teams).sort((a,b) => b.score - a.score);
 
   new Chart(el, {
     type: "bar",
     data: {
-      labels: sorted.map(r => r.teamName),
+      labels: rows.map(r => r.teamName),
       datasets: [{
-        label: "Correct tasks (rest)",
-        data: sorted.map(r => r.correctCount),
-        backgroundColor: sorted.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
-        borderColor: "#4A4046",
+        label: "Score (scored tasks)",
+        data: rows.map(r => r.score),
+        backgroundColor: rows.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        borderColor: "#ffffff",
         borderWidth: 2,
       }],
     },
@@ -184,7 +192,12 @@ function drawCorrectBarChart(correctRows) {
       responsive: true,
       plugins: { legend: { display: false } },
       scales: {
-        y: { beginAtZero: true, ticks: { precision: 0 } }
+        y: { beginAtZero: true, ticks: { precision: 0 } },
+        x: {
+          ticks: {
+            font: { size: 13, weight: "600" },
+          }
+        }
       }
     }
   });
@@ -492,7 +505,7 @@ async function run() {
     </div>
   `;
 
-  drawCorrectBarChart(correctRows);
+  drawAnswersScoreBarChart(teams)
   drawSatisfactionChart(ratingCounts);
   drawTopWords(wordCounts);
   drawDonutCharts(teams, DONUT_TASK_IDS);
