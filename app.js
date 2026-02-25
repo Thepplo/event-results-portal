@@ -7,6 +7,8 @@ const INCLUDED_TASK_IDS = new Set([
   "c7CRRaGrZ"
   
 ]);
+
+
 const TASK_LABELS = { 
   "Tj4VO5V_f": "What was your goal based on the brief (Multiple Choice)?",
   "teu-Hoocx": "What was your strategy (Multiple Choice)?",
@@ -98,7 +100,7 @@ function renderTaskCharts(teams) {
         <div class="muted" style="margin-top:8px;">
           ${Array.from(optionMap.entries())
             .sort((a,b)=>b[1]-a[1])
-            .map(([opt,count]) => `<div><b>${count}</b> — ${escapeHtml(opt)}</div>`)
+            .map(([opt,count]) => `<div>${escapeHtml(opt)} - <b>${count}</b></div>`)
             .join("")}
         </div>
       </div>
