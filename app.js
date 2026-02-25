@@ -8,7 +8,152 @@ const INCLUDED_TASK_IDS = new Set([
   
 ]);
 
+function normalizeAnswerToOptions(answer) {
+  if (answer === null || answer === undefined) return [];
 
+  if (Array.isArray(answer)) {
+    return answer.map(v => String(v).trim()).filter(Boolean);
+  }
+
+  if (typeof answer === "number" || typeof answer === "boolean") {
+    return [String(answer)];
+  }
+
+  const s = String(answer).trim();
+  if (!s) return [];
+
+  if (s.startsWith("[") && s.endsWith("]")) {
+    try {
+      const parsed = JSON.parse(s);
+      if (Array.isArray(parsed)) {
+        return parsed.map(v => String(v).trim()).filter(Boolean);
+      }
+    } catch {
+    }
+  }
+
+  if (s.includes(",")) {
+    const parts = s.split(",").map(p => p.trim()).filter(Boolean);
+    if (parts.length > 1) return parts;
+  }
+
+  return [s];
+}
+function aggregateOptionsByTask(teams, includedTaskIds) {
+  const agg = new Map();
+
+  for (const team of teams) {
+    const answers = team.answers || [];
+    for (const a of answers) {
+      const taskId = a.taskId;
+      if (!taskId) continue;
+      if (includedTaskIds && includedTaskIds.size && !includedTaskIds.has(taskId)) continue;
+
+      const options = normalizeAnswerToOptions(a.answer);
+
+      if (!agg.has(taskId)) agg.set(taskId, new Map());
+      const map = agg.get(taskId);
+
+      for (const opt of options) {
+        map.set(opt, (map.get(opt) || 0) + 1);
+      }
+    }
+  }
+
+  return agg;
+}
+
+function renderTaskCharts(teams) {
+  const taskAgg = aggregateOptionsByTask(teams, (typeof INCLUDED_TASK_IDS !== "undefined" ? INCLUDED_TASK_IDS : null));
+
+  if (!taskAgg.size) {
+    return `<div class="card"><h3>Survey Charts</h3><p class="muted">No answers found for selected tasks.</p></div>`;
+  }
+
+  const blocks = [];
+  for (const [taskId, optionMap] of taskAgg.entries()) {
+    const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
+    blocks.push(`
+      <div class="card">
+        <h3>Task: <code>${taskId}</code></h3>
+        <div style="max-width:520px;">
+          <canvas id="${canvasId}" height="260"></canvas>
+        </div>
+        <div class="muted" style="margin-top:8px;">
+          ${Array.from(optionMap.entries())
+            .sort((a,b)=>b[1]-a[1])
+            .map(([opt,count]) => `<div><b>${count}</b> — ${escapeHtml(opt)}</div>`)
+            .join("")}
+        </div>
+      </div>
+    `);
+  }
+
+
+  return `<div class="card"><h2>Survey Results</h2><p class="muted">Distribution of selected options per task.</p></div>${blocks.join("")}`;
+}
+
+function drawTaskCharts(teams) {
+  const taskAgg = aggregateOptionsByTask(teams, (typeof INCLUDED_TASK_IDS !== "undefined" ? INCLUDED_TASK_IDS : null));
+
+  for (const [taskId, optionMap] of taskAgg.entries()) {
+    const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
+    const el = document.getElementById(canvasId);
+    if (!el) continue;
+
+    const labels = Array.from(optionMap.keys());
+    const values = labels.map(l => optionMap.get(l));
+
+    const MAX_SLICES = 10;
+    let finalLabels = labels;
+    let finalValues = values;
+
+    if (labels.length > MAX_SLICES) {
+      const pairs = labels.map((l,i)=>({ label:l, value:values[i] }))
+                          .sort((a,b)=>b.value-a.value);
+
+      const top = pairs.slice(0, MAX_SLICES - 1);
+      const rest = pairs.slice(MAX_SLICES - 1);
+      const otherSum = rest.reduce((s,p)=>s+p.value,0);
+
+      finalLabels = top.map(p=>p.label).concat(["Other"]);
+      finalValues = top.map(p=>p.value).concat([otherSum]);
+    }
+
+    new Chart(el, {
+      type: "doughnut",
+      data: {
+        labels: finalLabels,
+        datasets: [{ data: finalValues }],
+      },
+      options: {
+        responsive: true,
+        plugins: {
+          legend: { position: "bottom" },
+          tooltip: {
+            callbacks: {
+              label: (ctx) => {
+                const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
+                const v = ctx.parsed;
+                const pct = total ? Math.round((v/total)*100) : 0;
+                return `${ctx.label}: ${v} (${pct}%)`;
+              }
+            }
+          }
+        }
+      }
+    });
+  }
+}
+
+function escapeHtml(str) {
+  return String(str)
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
 function qs() {
   return new URLSearchParams(location.search);
 }
@@ -121,7 +266,10 @@ async function run() {
   }
 
   teams.sort((a, b) => (b.totalScore ?? 0) - (a.totalScore ?? 0));
-  app.innerHTML = teams.map(renderTeam).join("");
+
+  app.innerHTML = renderTaskCharts(teams) + teams.map(renderTeam).join("");
+
+  drawTaskCharts(teams);
 }
 
 run().catch(err => {
