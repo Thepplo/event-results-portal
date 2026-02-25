@@ -1,4 +1,4 @@
-const WORKER_BASE = "https://gentle-darkness-f7c5.theo-4e3.workers.dev/";
+const WORKER_BASE = "https://gentle-darkness-f7c5.theo-4e3.workers.dev";
 
 function qs() {
   return new URLSearchParams(location.search);
@@ -86,16 +86,24 @@ async function run() {
     return;
   }
 
-  app.textContent = "Loading…";
-  const data = await fetchResults({ gameId, teamId });
-
-  const team = data.team || (data.items && data.items[0]);
-  if (!team) {
-    app.textContent = "No team found for that game/team.";
+  if (data.team) {
+    if (!data.team) {
+      app.textContent = "No team found for that game/team.";
+      return;
+    }
+    app.innerHTML = renderTeam(data.team);
     return;
   }
 
-  app.innerHTML = renderTeam(team);
+  const teams = data.items || [];
+  if (!teams.length) {
+    app.textContent = "No teams found for that game.";
+    return;
+  }
+
+  teams.sort((a, b) => (b.totalScore ?? 0) - (a.totalScore ?? 0));
+
+  app.innerHTML = teams.map(renderTeam).join("");
 }
 
 run().catch(err => {
