@@ -184,8 +184,8 @@ function drawAnswersScoreBarChart(teams) {
         label: "Score (scored tasks)",
         data: rows.map(r => r.score),
         backgroundColor: rows.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
-        borderColor: "#ffffff",
-        borderWidth: 2,
+        borderColor: "#4A4046",
+        borderWidth: 1,
       }],
     },
     options: {
@@ -195,7 +195,8 @@ function drawAnswersScoreBarChart(teams) {
         y: { beginAtZero: true, ticks: { precision: 0 } },
         x: {
           ticks: {
-            font: { size: 13, weight: "600" },
+            color: "#F3EDEE",
+            font: { size: 13, weight: "600", family: "Montserrat, sans-serif" },
           }
         }
       }
@@ -258,12 +259,6 @@ function drawTopWords(wordCounts, topN = 10) {
         x: { beginAtZero: true, 
           ticks: {
            precision: 0,
-           color: "var(--text)",
-            font: {
-            family: "'Montserrat', sans-serif",
-            size: 14,
-            weight: "600"
-          }
           } }
       }
     }
