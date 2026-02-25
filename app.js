@@ -276,7 +276,8 @@ function renderDonutCharts (teams) {
     const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
     blocks.push(`
       <div class="card">
-        <h3>Question: ${TASK_LABELS[taskId] || taskId}</h3>
+        <h3>Question:</h3>
+        <h3>${TASK_LABELS[taskId] || taskId}</h3>
         <div style="max-width:520px;">
           <canvas id="${canvasId}" height="260"></canvas>
         </div>
@@ -291,7 +292,7 @@ function renderDonutCharts (teams) {
   }
 
 
-  return `<div class="card"><h2>Survey Results</h2><p class="muted">Distribution of selected options per task.</p></div>${blocks.join("")}`;
+  return `${blocks.join("")}`;
 }
 
 function drawDonutCharts(teams, taskIds) {
