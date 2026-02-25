@@ -219,7 +219,6 @@ function renderTeam(team) {
               <tr>
                 <td>${a.taskId ?? ""}</td>
                 <td>${(a.answer ?? "").toString()}</td>
-                <td>${a.correct ? "✅" : "❌"}</td>
                 <td>${a.score ?? ""}</td>
               </tr>
             `).join("")}
