@@ -66,6 +66,7 @@ const CHART_COLORS = [
   "#3e95eb",
   "#770136",
 ];
+
 function decodeOption(taskId, raw) {
   const map = TASK_OPTION_LABELS[taskId];
   if (!map) return String(raw);
@@ -93,6 +94,8 @@ function normalizeAnswerToOptions(taskId, answer) {
 
   return [decodeOption(taskId, s)];
 }
+
+
 function createBarGradient(ctx, color) {
   const gradient = ctx.createLinearGradient(0, 0, 0, 300);
   gradient.addColorStop(0, lighten(color, 0.6));
@@ -110,7 +113,7 @@ function lighten(hex, amount) {
   b = Math.min(255, b);
   return `rgb(${r},${g},${b})`;
 }
-
+/* 
 function normalizeAnswerToOptions(answer) {
   if (answer === null || answer === undefined) return [];
 
@@ -141,7 +144,7 @@ function normalizeAnswerToOptions(answer) {
   }
 
   return [s];
-}
+} */
 function aggregateOptionsByTask(teams, taskIdsSet) {
   const agg = new Map();
 
