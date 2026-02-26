@@ -334,8 +334,8 @@ function drawWordCloud(wordCounts, topN = 30) {
         color: "#ffffff",
         minRotation: 0,
         maxRotation: 0,
-        rotationSteps: 0,
-        padding: 1,
+        rotationSteps: 1,
+        padding: 5,
       }],
     },
     options: {
