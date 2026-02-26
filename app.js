@@ -604,7 +604,7 @@ async function run() {
 
     <div class="card">
       <h2>One-word experience</h2>
-      <canvas id="wordCloudCanvas" height="180" width="100%"></canvas>
+      <canvas id="wordCloudCanvas" height="100vh" max-height="100vh" width="100%"></canvas>
     </div>
   `;
 
