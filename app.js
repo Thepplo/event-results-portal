@@ -440,7 +440,7 @@ async function run() {
   const params = qs();
   const gameId = params.get("gameId");
   const teamId = params.get("teamId");
-
+  const loginCard = document.getElementById("login-card");
   const loadBtn = document.getElementById("loadBtn");
 
   if (!loadBtn.dataset.bound) {
@@ -455,7 +455,6 @@ async function run() {
   }
 
   if (!gameId) {
-    app.textContent = "Enter a gameId above or open this page with ?gameId=...";
     return;
   }
 
@@ -468,12 +467,15 @@ async function run() {
       return;
     }
     app.innerHTML = renderTeam(data.team);
+    loginCard.style.display = "none";
     return;
   }
 
   const teams = data.items || [];
   if (!teams.length) {
     app.textContent = "No teams found for that game.";
+    loginCard.style.display = "flex";
+
     return;
   }
 
