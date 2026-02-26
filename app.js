@@ -313,6 +313,10 @@ function drawSatisfactionChart(ratingCounts) {
 function drawWordCloud(wordCounts, topN = 30) {
   const el = document.getElementById("wordCloudCanvas");
   if (!el) return;
+  const FIXED_H = Number(el.getAttribute("height")) || 180;
+  el.style.height = `${FIXED_H}px`;
+  el.style.maxHeight = `${FIXED_H}px`;
+  el.style.display = "block";
 
   const pairs = Array.from(wordCounts.entries())
     .sort((a, b) => b[1] - a[1])
@@ -332,14 +336,12 @@ function drawWordCloud(wordCounts, topN = 30) {
       }],
     },
     options: {
-      plugins: { legend: { display: false } },
-      layout: {
-        padding: 8,
-      },
-      fit: true,
-      rotation: 0,
-      // rotationSteps: 2,
-    },
+          responsive: false,
+          fit: false,
+          plugins: { legend: { display: false } },
+          layout: { padding: 8 },
+          rotation: 0,
+        },
   });
 }
 function renderDonutCharts (teams) {
