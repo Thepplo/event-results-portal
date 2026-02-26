@@ -17,11 +17,43 @@ const INCLUDED_TASK_IDS = new Set([
   "dbO09epte",
 ]);
 
+const TASK_OPTION_LABELS = {
+  "Tj4VO5V_f": {
+    0: "Was there a brief?",
+    1: "Unlock all Modules",
+    2: "I don't know",
+    3: "Unlock all my allotted Modules",
+  },
 
+  "teu-Hoocx": {
+    0: "I didn't have a specific strategy",
+    1: "Just going and getting the job done",
+    2: "We had clear roles & procedures",
+    3: "We agreed on policies and how to attack the problem",
+    4: "We did an analysis on the main probem we needed to crack",
+  },
+
+  
+  "hynVN5lkv": {
+    0: "We had a clear set of actions",
+    1: "We agreed on clear roles",
+    2: "We consistently executed what we decided",
+    3: "We started in one direction but lost it quickly",
+    4: "We nailed it",
+  },
+
+  "dbO09epte": {
+    0: "1",
+    1: "2",
+    2: "3",
+    3: "4",
+    4: "5",
+  },
+};
 const TASK_LABELS = { 
   "Tj4VO5V_f": "What was your goal based on the brief (Multiple Choice)?",
   "teu-Hoocx": "What was your strategy (Multiple Choice)?",
-  "hynVN5lkv": "How well did you execute the strategy (1-5)?",
+  "hynVN5lkv": "How well did you execute the strategy?",
   "dbO09epte": "How would you score your team's communication during the mission (1-5)?",
   "c7CRRaGrZ": "How satisfied are you with the overall outcome of your team (1-5)?"
 
@@ -34,7 +66,33 @@ const CHART_COLORS = [
   "#3e95eb",
   "#770136",
 ];
+function decodeOption(taskId, raw) {
+  const map = TASK_OPTION_LABELS[taskId];
+  if (!map) return String(raw);
 
+  const key = String(raw).trim();
+
+  if (map[key] != null) return map[key];
+  if (map[Number(key)] != null) return map[Number(key)];
+
+  return key;
+}
+
+function normalizeAnswerToOptions(taskId, answer) {
+  if (answer === null || answer === undefined) return [];
+
+  if (Array.isArray(answer)) return answer.map(v => decodeOption(taskId, v));
+
+  const s = String(answer).trim();
+  if (s.startsWith("[") && s.endsWith("]")) {
+    try {
+      const parsed = JSON.parse(s);
+      if (Array.isArray(parsed)) return parsed.map(v => decodeOption(taskId, v));
+    } catch {}
+  }
+
+  return [decodeOption(taskId, s)];
+}
 function createBarGradient(ctx, color) {
   const gradient = ctx.createLinearGradient(0, 0, 0, 300);
   gradient.addColorStop(0, lighten(color, 0.6));
@@ -84,29 +142,27 @@ function normalizeAnswerToOptions(answer) {
 
   return [s];
 }
-function aggregateOptionsByTask(teams, includedTaskIds) {
+function aggregateOptionsByTask(teams, taskIdsSet) {
   const agg = new Map();
 
   for (const team of teams) {
-    const answers = team.answers || [];
-    for (const a of answers) {
-      const taskId = a.taskId;
-      if (!taskId) continue;
-      if (includedTaskIds && includedTaskIds.size && !includedTaskIds.has(taskId)) continue;
+    for (const a of (team.answers || [])) {
+      if (!a.taskId) continue;
+      if (taskIdsSet && taskIdsSet.size && !taskIdsSet.has(a.taskId)) continue;
 
-      const options = normalizeAnswerToOptions(a.answer);
+      const opts = normalizeAnswerToOptions(a.taskId, a.answer);
 
-      if (!agg.has(taskId)) agg.set(taskId, new Map());
-      const map = agg.get(taskId);
+      if (!agg.has(a.taskId)) agg.set(a.taskId, new Map());
+      const map = agg.get(a.taskId);
 
-      for (const opt of options) {
-        map.set(opt, (map.get(opt) || 0) + 1);
+      for (const optLabel of opts) {
+        map.set(optLabel, (map.get(optLabel) || 0) + 1);
       }
     }
   }
-
   return agg;
 }
+
 function buildBarRowsFromAnswersScore(teams) {
   return teams.map(t => ({
     teamId: t.id,
