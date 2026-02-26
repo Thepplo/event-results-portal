@@ -29,7 +29,7 @@ const TASK_LABELS = {
 
 const CHART_COLORS = [
   "#2d52b5",
-  "#ffda33",
+  "#f4c430",
   "#e53846",
   "#3e95eb",
   "#770136",
@@ -37,7 +37,7 @@ const CHART_COLORS = [
 
 function createBarGradient(ctx, color) {
   const gradient = ctx.createLinearGradient(0, 0, 0, 300);
-  gradient.addColorStop(0, lighten(color, 0.15));
+  gradient.addColorStop(0, lighten(color, 0.6));
   gradient.addColorStop(1, color);
   return gradient;
 }
