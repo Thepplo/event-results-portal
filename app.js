@@ -276,9 +276,8 @@ function renderDonutCharts (teams) {
     const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
     blocks.push(`
       <div class="card">
-        <h3>Question:</h3>
         <h3>${TASK_LABELS[taskId] || taskId}</h3>
-        <div style="max-width:520px;">
+        <div style="max-width:700px;">
           <canvas id="${canvasId}" height="260"></canvas>
         </div>
         <div class="muted" style="margin-top:8px;">
@@ -455,10 +454,10 @@ async function run() {
   }
 
   if (!gameId) {
+    loginCard.style.display = "flex";
     return;
   }
 
-  app.textContent = "Loading…";
   const data = await fetchResults({ gameId, teamId });
 
   if (data.team) {
@@ -466,18 +465,19 @@ async function run() {
       app.textContent = "No team found for that game/team.";
       return;
     }
-    app.innerHTML = renderTeam(data.team);
     loginCard.style.display = "none";
+    app.innerHTML = renderTeam(data.team);
+
     return;
   }
 
   const teams = data.items || [];
   if (!teams.length) {
     app.textContent = "No teams found for that game.";
-    loginCard.style.display = "flex";
 
     return;
   }
+  loginCard.style.display = "none"; 
 
   const restTaskIdsSet = deriveRestTaskIdSet(teams);
   const correctRows = computeCorrectCountPerTeam(teams, restTaskIdsSet);
