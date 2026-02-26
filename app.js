@@ -291,7 +291,11 @@ function renderDonutCharts (teams) {
   }
 
 
-  return `${blocks.join("")}`;
+  return `
+  <div class="donut-grid">
+    ${blocks.join("")}
+  </div>
+`;
 }
 
 function drawDonutCharts(teams, taskIds) {
