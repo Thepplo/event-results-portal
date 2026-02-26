@@ -325,7 +325,7 @@ function drawWordCloud(wordCounts, topN = 30) {
   const labels = pairs.map(p => p[0]);
   const data = pairs.map(p => p[1]);
 
-  new Chart(el, {
+  new Chart(el.getContext("2d"), {
     type: "wordCloud",
     data: {
       labels,
@@ -340,7 +340,7 @@ function drawWordCloud(wordCounts, topN = 30) {
       }],
     },
     options: {
-      responsive: true,
+      responsive: false,
       maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       layout: { padding: 8 },
@@ -604,7 +604,7 @@ async function run() {
 
     <div class="card">
       <h2>One-word experience</h2>
-      <canvas id="wordCloudCanvas" height="180"></canvas>
+      <canvas id="wordCloudCanvas" height="180" width="100%"></canvas>
     </div>
   `;
 
