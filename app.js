@@ -35,6 +35,24 @@ const CHART_COLORS = [
   "#770136",
 ];
 
+function createBarGradient(ctx, color) {
+  const gradient = ctx.createLinearGradient(0, 0, 0, 300);
+  gradient.addColorStop(0, lighten(color, 0.15));
+  gradient.addColorStop(1, color);
+  return gradient;
+}
+
+function lighten(hex, amount) {
+  const num = parseInt(hex.replace("#",""), 16);
+  let r = (num >> 16) + Math.round(255 * amount);
+  let g = ((num >> 8) & 0x00FF) + Math.round(255 * amount);
+  let b = (num & 0x0000FF) + Math.round(255 * amount);
+  r = Math.min(255, r);
+  g = Math.min(255, g);
+  b = Math.min(255, b);
+  return `rgb(${r},${g},${b})`;
+}
+
 function normalizeAnswerToOptions(answer) {
   if (answer === null || answer === undefined) return [];
 
@@ -163,7 +181,7 @@ function aggregateMixedTask(teams) {
     const cleaned = (word || "")
       .toLowerCase()
       .trim()
-      .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, ""); // trim punctuation
+      .replace(/^[^\p{L}\p{N}]+|[^\p{L}\p{N}]+$/gu, "");
 
     if (cleaned) wordCounts.set(cleaned, (wordCounts.get(cleaned) || 0) + 1);
   }
@@ -175,7 +193,7 @@ function drawAnswersScoreBarChart(teams) {
   if (!el) return;
 
   const rows = buildBarRowsFromAnswersScore(teams).sort((a,b) => b.score - a.score);
-
+  const ctx = el.getContext("2d");
   new Chart(el, {
     type: "bar",
     data: {
@@ -183,7 +201,9 @@ function drawAnswersScoreBarChart(teams) {
       datasets: [{
         label: "Score (scored tasks)",
         data: rows.map(r => r.score),
-        backgroundColor: rows.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
+        backgroundColor: rows.map((_, i) =>
+          createBarGradient(ctx, CHART_COLORS[i % CHART_COLORS.length])
+        ),
         borderColor: "#4A4046",
         borderWidth: 1,
       }],
