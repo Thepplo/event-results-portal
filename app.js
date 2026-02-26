@@ -337,7 +337,7 @@ function drawWordCloud(wordCounts, topN = 30) {
     },
     options: {
           responsive: false,
-          fit: false,
+          fit: true,
           plugins: { legend: { display: false } },
           layout: { padding: 8 },
           rotation: 0,
