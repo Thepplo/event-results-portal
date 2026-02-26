@@ -424,13 +424,19 @@ function drawDonutCharts(teams, taskIds) {
       options: {
         responsive: true,
         plugins: {
-          legend: { position: "bottom" },
+          legend: { display: "false" },
           datalabels: {
+            color: "#ffffff",
+            font: {
+              weight: "600",
+              size: 14
+            },
             formatter: (value) => {
               return value + '%';
             },
           },
           tooltip: {
+
             callbacks: {
               label: (ctx) => {
                 const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
