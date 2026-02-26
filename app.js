@@ -322,7 +322,7 @@ function drawWordCloud(wordCounts, topN = 30) {
   const labels = pairs.map(p => p[0]);
   const data = pairs.map(p => p[1]);
   const maxCount = Math.max(...data);
-  const scaledData = data.map(c => (c / maxCount) * 80 + 20);
+  const scaledData = data.map(c => (c / maxCount) * 50 + 20);
 
   new Chart(el.getContext("2d"), {
     type: "wordCloud",
@@ -332,9 +332,9 @@ function drawWordCloud(wordCounts, topN = 30) {
         label: "Experience words",
         data: scaledData,
         color: "#ffffff",
-        minRotation: -90,
+        minRotation: 0,
         maxRotation: 0,
-        rotationSteps: 2,
+        rotationSteps: 0,
         padding: 1,
       }],
     },
@@ -603,7 +603,7 @@ async function run() {
 
     <div class="card">
       <h2>One-word experience</h2>
-      <canvas id="wordCloudCanvas" style="height: 100vh; max-height: 100vh; width: 100%;"></canvas>
+      <canvas id="wordCloudCanvas" style="height: 500px; max-height: 500px; width: 100%;"></canvas>
     </div>
   `;
 
