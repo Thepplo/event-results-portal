@@ -191,7 +191,7 @@ function deriveRestTaskIdSet(teams) {
   return all;
 }
 
-function computeCorrectCountPerTeam(teams, restTaskIdsSet) {
+/* function computeCorrectCountPerTeam(teams, restTaskIdsSet) {
   return teams.map(t => {
     const correct = (t.answers || []).reduce((sum, a) => {
       if (!a.taskId) return sum;
@@ -206,7 +206,7 @@ function computeCorrectCountPerTeam(teams, restTaskIdsSet) {
     };
   });
 }
-
+ */
 function parseRatingAndWordFromString(answer) {
   const s = String(answer ?? "").trim();
   if (!s) return { rating: null, word: "" };
@@ -339,7 +339,7 @@ function drawWordCloud(wordCounts, topN = 30) {
       }],
     },
     options: {
-      responsive: false,
+      responsive: true,
       maintainAspectRatio: false,
       plugins: { legend: { display: false } },
       layout: { padding: 8 },
@@ -584,7 +584,6 @@ async function run() {
   loginCard.style.display = "none"; 
 
   const restTaskIdsSet = deriveRestTaskIdSet(teams);
-  const correctRows = computeCorrectCountPerTeam(teams, restTaskIdsSet);
 
   const { ratingCounts, wordCounts } = aggregateMixedTask(teams);
 
