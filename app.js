@@ -333,16 +333,20 @@ function drawWordCloud(wordCounts, topN = 30) {
         label: "Experience words",
         data,
         color: "#ffffff",
+        minRotation: -90,
+        maxRotation: 0,
+        rotationSteps: 2,
+        padding: 1,
       }],
     },
     options: {
-          responsive: false,
-          fit: true,
-          plugins: { legend: { display: false } },
-          layout: { padding: 8 },
-          rotation: 0,
-        },
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      layout: { padding: 8 },
+    },
   });
+
 }
 function renderDonutCharts (teams) {
   const donutAgg = aggregateOptionsByTask(teams, new Set(DONUT_TASK_IDS));
