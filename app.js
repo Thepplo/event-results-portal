@@ -328,7 +328,7 @@ function drawWordCloud(wordCounts, topN = 30) {
       datasets: [{
         label: "Experience words",
         data,
-        color: (ctx) => CHART_COLORS[ctx.dataIndex % CHART_COLORS.length],
+        color: "#ffffff",
       }],
     },
     options: {
@@ -336,10 +336,8 @@ function drawWordCloud(wordCounts, topN = 30) {
       layout: {
         padding: 8,
       },
-      // If supported in your version:
-      // fit: true,
-      // If supported:
-      // rotation: 0,
+      fit: true,
+      rotation: 0,
       // rotationSteps: 2,
     },
   });
