@@ -201,8 +201,8 @@ function drawAnswersScoreBarChart(teams) {
       datasets: [{
         label: "Score (scored tasks)",
         data: rows.map(r => r.score),
-        backgroundColor: rows.map((_, i) =>
-          createBarGradient(ctx, CHART_COLORS[i % CHART_COLORS.length])
+        backgroundColor: rows.map((r, i) =>
+          i === 0 ? "#ffda33" : "#2d52b5"
         ),
         borderColor: "#4A4046",
         borderWidth: 1,
