@@ -82,6 +82,9 @@ body {
   grid-template-columns: repeat(2, 1fr);
   background-color: var(--border);
   border-radius: 12px; 
+  overflow: hidden;
+  box-shadow: var(--shadow-card);
+
 }
 
 .login-card {

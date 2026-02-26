@@ -310,37 +310,38 @@ function drawSatisfactionChart(ratingCounts) {
     }
   });
 }
-function drawTopWords(wordCounts, topN = 10) {
-  const el = document.getElementById("wordChart");
+function drawWordCloud(wordCounts, topN = 30) {
+  const el = document.getElementById("wordCloudCanvas");
   if (!el) return;
 
   const pairs = Array.from(wordCounts.entries())
-    .sort((a,b) => b[1] - a[1])
+    .sort((a, b) => b[1] - a[1])
     .slice(0, topN);
 
+  const labels = pairs.map(p => p[0]);
+  const data = pairs.map(p => p[1]);
+
   new Chart(el, {
-    type: "bar",
+    type: "wordCloud",
     data: {
-      labels: pairs.map(p => p[0]),
+      labels,
       datasets: [{
-        label: "Top words",
-        data: pairs.map(p => p[1]),
-        backgroundColor: pairs.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
-        borderColor: "#4A4046",
-        borderWidth: 2,
+        label: "Experience words",
+        data,
+        color: (ctx) => CHART_COLORS[ctx.dataIndex % CHART_COLORS.length],
       }],
     },
     options: {
-      indexAxis: "y",
-      responsive: true,
       plugins: { legend: { display: false } },
-      scales: {
-        x: { beginAtZero: true, 
-          ticks: {
-           precision: 0,
-          } }
-      }
-    }
+      layout: {
+        padding: 8,
+      },
+      // If supported in your version:
+      // fit: true,
+      // If supported:
+      // rotation: 0,
+      // rotationSteps: 2,
+    },
   });
 }
 function renderDonutCharts (teams) {
@@ -599,13 +600,13 @@ async function run() {
 
     <div class="card">
       <h2>One-word experience</h2>
-      <canvas id="wordChart" height="180"></canvas>
+      <canvas id="wordCloudCanvas" height="180"></canvas>
     </div>
   `;
 
   drawAnswersScoreBarChart(teams)
   drawSatisfactionChart(ratingCounts);
-  drawTopWords(wordCounts);
+  drawWordCloud(wordCounts);
   drawDonutCharts(teams, DONUT_TASK_IDS);
 }
 
