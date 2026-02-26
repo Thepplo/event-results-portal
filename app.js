@@ -313,7 +313,7 @@ function drawSatisfactionChart(ratingCounts) {
 function drawWordCloud(wordCounts, topN = 30) {
   const el = document.getElementById("wordCloudCanvas");
   if (!el) return;
-  const FIXED_H = Number(el.getAttribute("height")) || 180;
+  const FIXED_H = Number(el.getAttribute("height")) || 500;
   el.style.height = `${FIXED_H}px`;
   el.style.maxHeight = `${FIXED_H}px`;
   el.style.display = "block";
