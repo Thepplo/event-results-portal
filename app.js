@@ -424,7 +424,7 @@ function drawDonutCharts(teams, taskIds) {
       options: {
         responsive: true,
         plugins: {
-          legend: { display: "false" },
+          legend: { display: false },
           datalabels: {
             color: "#ffffff",
             font: {
@@ -447,7 +447,8 @@ function drawDonutCharts(teams, taskIds) {
             }
           }
         }
-      }
+      },
+      plugins: [ChartDataLabels]
     });
   }
 }
