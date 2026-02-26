@@ -321,6 +321,8 @@ function drawWordCloud(wordCounts, topN = 30) {
 
   const labels = pairs.map(p => p[0]);
   const data = pairs.map(p => p[1]);
+  const maxCount = Math.max(...data);
+  const scaledData = data.map(c => (c / maxCount) * 80 + 20);
 
   new Chart(el.getContext("2d"), {
     type: "wordCloud",
@@ -328,7 +330,7 @@ function drawWordCloud(wordCounts, topN = 30) {
       labels,
       datasets: [{
         label: "Experience words",
-        data,
+        data: scaledData,
         color: "#ffffff",
         minRotation: -90,
         maxRotation: 0,
