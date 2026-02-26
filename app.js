@@ -425,6 +425,11 @@ function drawDonutCharts(teams, taskIds) {
         responsive: true,
         plugins: {
           legend: { position: "bottom" },
+          datalabels: {
+            formatter: (value) => {
+              return value + '%';
+            },
+          },
           tooltip: {
             callbacks: {
               label: (ctx) => {
