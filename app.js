@@ -202,7 +202,7 @@ function drawAnswersScoreBarChart(teams) {
         label: "Score (scored tasks)",
         data: rows.map(r => r.score),
         backgroundColor: rows.map((r, i) =>
-          i === 0 ? "#ffda33" : "#2d52b5"
+          i === 0 ? "#f4c430" : "#2d52b5"
         ),
         borderColor: "#4A4046",
         borderWidth: 1,

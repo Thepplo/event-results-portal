@@ -42,7 +42,7 @@
 
 body {
     font-family: "Montserrat", sans-serif; 
-    max-width: 900px; 
+    max-width: 1200px; 
     margin: 24px auto; 
     padding: 0 16px;
     background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
@@ -61,6 +61,7 @@ body {
     box-shadow: var(--shadow-card);
     justify-content: center;
     align-items: center;
+    text-align: center;
 }
 
 .donut-grid {
