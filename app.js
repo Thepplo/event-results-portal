@@ -354,7 +354,7 @@ function renderDonutCharts (teams) {
   for (const [taskId, optionMap] of donutAgg.entries()) {
     const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
     blocks.push(`
-      <div class="card">
+      <div class="donut-card">
         <h3>${TASK_LABELS[taskId] || taskId}</h3>
         <div style="max-width:700px;">
           <canvas id="${canvasId}" height="260"></canvas>
