@@ -431,9 +431,12 @@ function drawDonutCharts(teams, taskIds) {
               weight: "600",
               size: 14
             },
-            formatter: (value) => {
-              return value + '%';
-            },
+          formatter: (value, context) => {
+            const data = context.chart.data.datasets[0].data;
+            const total = data.reduce((a,b)=>a+b,0);
+            const percentage = total ? (value / total) * 100 : 0;
+            return percentage > 5 ? percentage.toFixed(0) + "%" : "";
+          }
           },
           tooltip: {
 
