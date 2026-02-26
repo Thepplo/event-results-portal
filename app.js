@@ -51,8 +51,8 @@ const TASK_OPTION_LABELS = {
   },
 };
 const TASK_LABELS = { 
-  "Tj4VO5V_f": "What was your goal based on the brief (Multiple Choice)?",
-  "teu-Hoocx": "What was your strategy (Multiple Choice)?",
+  "Tj4VO5V_f": "What was your goal based on the brief?",
+  "teu-Hoocx": "What was your strategy?",
   "hynVN5lkv": "How well did you execute the strategy?",
   "dbO09epte": "How would you score your team's communication during the mission (1-5)?",
   "c7CRRaGrZ": "How satisfied are you with the overall outcome of your team (1-5)?"
@@ -427,6 +427,8 @@ function drawDonutCharts(teams, taskIds) {
           legend: { display: false },
           datalabels: {
             color: "#ffffff",
+            textShadowColor: "rgba(0,0,0,0.4)",
+            textShadowBlur: 4,
             font: {
               weight: "600",
               size: 14
