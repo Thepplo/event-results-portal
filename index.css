@@ -49,16 +49,15 @@ body {
     min-height: 100vh;
 }
 .header {
-    background-image: linear-gradient(
-      to right,
-      rgb(var(--primary-dark) / 0.85),
-      rgb(var(--primary) / 0.95),
-      rgb(var(--primary-dark) / 0.85)
-    );
-    position: sticky;
+    position: absolute;
     top: 0;
     z-index: 40;
     width: 100%;
+    left: 0;
+}
+
+#app {
+    margin-top: 2rem;
 }
 
 .card { 
