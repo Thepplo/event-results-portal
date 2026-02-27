@@ -61,9 +61,9 @@ const TASK_LABELS = {
 
 const CHART_COLORS = [
   "#2d52b5",
+  "#3e95eb",
   "#f4c430",
   "#e53846",
-  "#3e95eb",
   "#770136",
 ];
 
@@ -179,6 +179,17 @@ function getOrderedLabelsForTask(taskId, optionMap) {
 
   const extras = Array.from(optionMap.keys()).filter(l => !ordered.includes(l));
   return ordered.concat(extras);
+}
+
+function colorForLabel(taskId, label) {
+  if (label === "Other") return "#666666";
+
+  const dict = TASK_OPTION_LABELS[taskId];
+  if (!dict) return CHART_COLORS[0];
+
+  const idx = Object.keys(dict).map(Number).find(k => dict[k] === label);
+
+  return CHART_COLORS[((idx ?? 0) % CHART_COLORS.length)];
 }
 
 function buildBarRowsFromAnswersScore(teams) {
@@ -364,11 +375,34 @@ function drawWordCloud(wordCounts, topN = 30) {
 }
 function renderDonutCharts (teams) {
   const donutAgg = aggregateOptionsByTask(teams, new Set(DONUT_TASK_IDS));
+  const legendLabels = getOrderedLabelsForTask(taskId, optionMap);
 
   if (!donutAgg.size) {
     return `<div class="card"><h3>Survey Charts</h3><p class="muted">No answers found for selected tasks.</p></div>`;
   }
+  const legendHtml = `
+    <div class="muted" style="margin-top:8px;">
+      ${legendLabels
+        .map(label => {
+          const count = optionMap.get(label) || 0;
+          const color = colorForLabel(taskId, label);
 
+          return `
+            <div style="display:flex; align-items:center; gap:8px; margin:4px 0;">
+              <span style="
+                width:10px; height:10px; border-radius:2px;
+                background:${color};
+                border:1px solid rgba(0,0,0,0.25);
+                display:inline-block;
+              "></span>
+              <span>${escapeHtml(label)}</span>
+              <span style="margin-left:auto;"><b>${count}</b></span>
+            </div>
+          `;
+        })
+        .join("")}
+    </div>
+  `;
   const blocks = [];
   for (const [taskId, optionMap] of donutAgg.entries()) {
     const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
@@ -379,10 +413,7 @@ function renderDonutCharts (teams) {
           <canvas id="${canvasId}" height="260"></canvas>
         </div>
         <div class="muted" style="margin-top:8px;">
-          ${Array.from(optionMap.entries())
-            .sort((a,b)=>b[1]-a[1])
-            .map(([opt,count]) => `<div>${escapeHtml(opt)} - <b>${count}</b></div>`)
-            .join("")}
+          ${legendHtml}
         </div>
       </div>
     `);
@@ -601,17 +632,16 @@ async function run() {
   }
   loginCard.style.display = "none"; 
 
-  const restTaskIdsSet = deriveRestTaskIdSet(teams);
-
   const { ratingCounts, wordCounts } = aggregateMixedTask(teams);
 
   app.innerHTML = `
+
+    ${renderDonutCharts(teams, DONUT_TASK_IDS)} 
+
     <div class="card">
       <h2>Correct tasks per person</h2>
       <canvas id="barCorrect" height="140"></canvas>
     </div>
-
-    ${renderDonutCharts(teams, DONUT_TASK_IDS)} 
 
     <div class="card">
       <h2>How satisfied are you with the overall outcome of your team (1-5)?</h2>
