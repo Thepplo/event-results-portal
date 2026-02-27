@@ -380,7 +380,10 @@ function renderDonutCharts (teams) {
   if (!donutAgg.size) {
     return `<div class="card"><h3>Survey Charts</h3><p class="muted">No answers found for selected tasks.</p></div>`;
   }
-  const legendHtml = `
+  
+  const blocks = [];
+  for (const [taskId, optionMap] of donutAgg.entries()) {
+    const legendHtml = `
     <div class="muted" style="margin-top:8px;">
       ${legendLabels
         .map(label => {
@@ -403,8 +406,6 @@ function renderDonutCharts (teams) {
         .join("")}
     </div>
   `;
-  const blocks = [];
-  for (const [taskId, optionMap] of donutAgg.entries()) {
     const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
     blocks.push(`
       <div class="donut-card">
