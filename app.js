@@ -191,11 +191,14 @@ function colorForLabel(taskId, label) {
 }
 
 function buildBarRowsFromAnswersScore(teams) {
-  return teams.map(t => ({
-    teamId: t.id,
-    teamName: t.name || t.members?.[0] || "Team",
-    score: Number(t.answersScore) || 0,
-  }));
+  return teams
+    .map(t => ({
+      teamId: t.id,
+      teamName: t.name || t.members?.[0] || "Team",
+      score: Number(t.answersScore) || 0,
+    }))
+    .sort((a, b) => b.score - a.score)
+    .slice(0, 5);
 }
 
 
