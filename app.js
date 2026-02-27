@@ -33,7 +33,6 @@ const TASK_OPTION_LABELS = {
     4: "We did an analysis on the main probem we needed to crack",
   },
 
-  
   "hynVN5lkv": {
     0: "We had a clear set of actions",
     1: "We agreed on clear roles",
@@ -144,38 +143,8 @@ function lighten(hex, amount) {
   b = Math.min(255, b);
   return `rgb(${r},${g},${b})`;
 }
-/* 
-function normalizeAnswerToOptions(answer) {
-  if (answer === null || answer === undefined) return [];
 
-  if (Array.isArray(answer)) {
-    return answer.map(v => String(v).trim()).filter(Boolean);
-  }
 
-  if (typeof answer === "number" || typeof answer === "boolean") {
-    return [String(answer)];
-  }
-
-  const s = String(answer).trim();
-  if (!s) return [];
-
-  if (s.startsWith("[") && s.endsWith("]")) {
-    try {
-      const parsed = JSON.parse(s);
-      if (Array.isArray(parsed)) {
-        return parsed.map(v => String(v).trim()).filter(Boolean);
-      }
-    } catch {
-    }
-  }
-
-  if (s.includes(",")) {
-    const parts = s.split(",").map(p => p.trim()).filter(Boolean);
-    if (parts.length > 1) return parts;
-  }
-
-  return [s];
-} */
 function aggregateOptionsByTask(teams, taskIdsSet) {
   const agg = new Map();
 
@@ -229,39 +198,7 @@ function buildBarRowsFromAnswersScore(teams) {
   }));
 }
 
-function collectAllTaskIds(teams) {
-  const set = new Set();
-  for (const t of teams) {
-    for (const a of (t.answers || [])) {
-      if (a.taskId) set.add(a.taskId);
-    }
-  }
-  return set;
-}
 
-function deriveRestTaskIdSet(teams) {
-  const all = collectAllTaskIds(teams);
-  for (const id of DONUT_TASK_IDS) all.delete(id);
-  all.delete(MIXED_TASK_ID);
-  return all;
-}
-
-/* function computeCorrectCountPerTeam(teams, restTaskIdsSet) {
-  return teams.map(t => {
-    const correct = (t.answers || []).reduce((sum, a) => {
-      if (!a.taskId) return sum;
-      if (!restTaskIdsSet.has(a.taskId)) return sum;
-      return sum + (a.correct === true ? 1 : 0);
-    }, 0);
-
-    return {
-      teamId: t.id,
-      teamName: t.name || t.members?.[0] || "Team",
-      correctCount: correct,
-    };
-  });
-}
- */
 function parseRatingAndWordFromString(answer) {
   const s = String(answer ?? "").trim();
   if (!s) return { rating: null, word: "" };
