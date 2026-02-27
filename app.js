@@ -67,6 +67,37 @@ const CHART_COLORS = [
   "#770136",
 ];
 
+const TASK_LABEL_TO_INDEX = (() => {
+  const out = {};
+  for (const [taskId, idxToLabel] of Object.entries(TASK_OPTION_LABELS)) {
+    out[taskId] = {};
+    for (const [k, label] of Object.entries(idxToLabel)) {
+      out[taskId][label] = Number(k);
+    }
+  }
+  return out;
+})();
+
+function computeDonutSeries(taskId, optionMap, maxSlices = 10) {
+  const labels = getOrderedLabelsForTask(taskId, optionMap);
+  const values = labels.map(l => optionMap.get(l) || 0);
+
+  if (labels.length <= maxSlices) return { labels, values };
+
+  const keptLabels = labels.slice(0, maxSlices - 1);
+  const keptSet = new Set(keptLabels);
+
+  const otherSum = labels
+    .filter(l => !keptSet.has(l))
+    .reduce((s, l) => s + (optionMap.get(l) || 0), 0);
+
+  return {
+    labels: keptLabels.concat(["Other"]),
+    values: keptLabels.map(l => optionMap.get(l) || 0).concat([otherSum]),
+  };
+}
+
+
 function decodeOption(taskId, raw) {
   const map = TASK_OPTION_LABELS[taskId];
   if (!map) return String(raw);
@@ -183,13 +214,11 @@ function getOrderedLabelsForTask(taskId, optionMap) {
 
 function colorForLabel(taskId, label) {
   if (label === "Other") return "#666666";
+  const idx = TASK_LABEL_TO_INDEX?.[taskId]?.[label];
 
-  const dict = TASK_OPTION_LABELS[taskId];
-  if (!dict) return CHART_COLORS[0];
+  const safeIdx = (idx ?? 0);
 
-  const idx = Object.keys(dict).map(Number).find(k => dict[k] === label);
-
-  return CHART_COLORS[((idx ?? 0) % CHART_COLORS.length)];
+  return CHART_COLORS[safeIdx % CHART_COLORS.length];
 }
 
 function buildBarRowsFromAnswersScore(teams) {
@@ -373,59 +402,48 @@ function drawWordCloud(wordCounts, topN = 30) {
   });
 
 }
-function renderDonutCharts (teams) {
+function renderDonutCharts(teams) {
   const donutAgg = aggregateOptionsByTask(teams, new Set(DONUT_TASK_IDS));
-  const legendLabels = getOrderedLabelsForTask(taskId, optionMap);
 
   if (!donutAgg.size) {
     return `<div class="card"><h3>Survey Charts</h3><p class="muted">No answers found for selected tasks.</p></div>`;
   }
-  
+
   const blocks = [];
   for (const [taskId, optionMap] of donutAgg.entries()) {
-    const legendHtml = `
-    <div class="muted" style="margin-top:8px;">
-      ${legendLabels
-        .map(label => {
-          const count = optionMap.get(label) || 0;
-          const color = colorForLabel(taskId, label);
+    const safeId = taskId.replace(/[^a-zA-Z0-9_]/g, "_");
+    const canvasId = `chart_${safeId}`;
 
-          return `
+    const { labels: finalLabels, values: finalValues } =
+      computeDonutSeries(taskId, optionMap, 10);
+
+    blocks.push(`
+      <div class="donut-card">
+        <h3>${TASK_LABELS[taskId] || taskId}</h3>
+
+        <div style="max-width:700px;">
+          <canvas id="${canvasId}" height="260"></canvas>
+        </div>
+
+        <div class="muted" style="margin-top:8px;">
+          ${finalLabels.map((label, i) => `
             <div style="display:flex; align-items:center; gap:8px; margin:4px 0;">
               <span style="
                 width:10px; height:10px; border-radius:2px;
-                background:${color};
+                background:${colorForLabel(taskId, label)};
                 border:1px solid rgba(0,0,0,0.25);
                 display:inline-block;
               "></span>
               <span>${escapeHtml(label)}</span>
-              <span style="margin-left:auto;"><b>${count}</b></span>
+              <span style="margin-left:auto;"><b>${finalValues[i]}</b></span>
             </div>
-          `;
-        })
-        .join("")}
-    </div>
-  `;
-    const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
-    blocks.push(`
-      <div class="donut-card">
-        <h3>${TASK_LABELS[taskId] || taskId}</h3>
-        <div style="max-width:700px;">
-          <canvas id="${canvasId}" height="260"></canvas>
-        </div>
-        <div class="muted" style="margin-top:8px;">
-          ${legendHtml}
+          `).join("")}
         </div>
       </div>
     `);
   }
 
-
-  return `
-  <div class="donut-grid">
-    ${blocks.join("")}
-  </div>
-`;
+  return `<div class="donut-grid">${blocks.join("")}</div>`;
 }
 
 function drawDonutCharts(teams, taskIds) {
@@ -436,27 +454,8 @@ function drawDonutCharts(teams, taskIds) {
     const el = document.getElementById(canvasId);
     if (!el) continue;
 
-    const labels = getOrderedLabelsForTask(taskId, optionMap);
-    const values = labels.map(l => optionMap.get(l) || 0);
-
-    const MAX_SLICES = 10;
-    let finalLabels = labels;
-    let finalValues = values;
-
-    if (labels.length > MAX_SLICES) {
-      const keptLabels = labels.slice(0, MAX_SLICES - 1);
-      const keptSet = new Set(keptLabels);
-
-      const otherSum = labels
-        .filter(l => !keptSet.has(l))
-        .reduce((s, l) => s + (optionMap.get(l) || 0), 0);
-
-      finalLabels = keptLabels.concat(["Other"]);
-      finalValues = keptLabels.map(l => optionMap.get(l) || 0).concat([otherSum]);
-    } else {
-      finalLabels = labels;
-      finalValues = values;
-    }
+    const { labels: finalLabels, values: finalValues } =
+      computeDonutSeries(taskId, optionMap, 10);
 
     new Chart(el, {
       type: "doughnut",
@@ -464,14 +463,9 @@ function drawDonutCharts(teams, taskIds) {
         labels: finalLabels,
         datasets: [{
           data: finalValues,
-
-          backgroundColor: finalLabels.map((_, i) =>
-            CHART_COLORS[i % CHART_COLORS.length]
-          ),
-
+          backgroundColor: finalLabels.map(label => colorForLabel(taskId, label)),
           borderColor: "#4A4046",
           borderWidth: 1,
-
           hoverOffset: 2
         }],
       },
@@ -483,24 +477,20 @@ function drawDonutCharts(teams, taskIds) {
             color: "#ffffff",
             textShadowColor: "rgba(0,0,0,0.4)",
             textShadowBlur: 4,
-            font: {
-              weight: "600",
-              size: 14
-            },
-          formatter: (value, context) => {
-            const data = context.chart.data.datasets[0].data;
-            const total = data.reduce((a,b)=>a+b,0);
-            const percentage = total ? (value / total) * 100 : 0;
-            return percentage > 5 ? percentage.toFixed(0) + "%" : "";
-          }
+            font: { weight: "600", size: 14 },
+            formatter: (value, context) => {
+              const data = context.chart.data.datasets[0].data;
+              const total = data.reduce((a, b) => a + b, 0);
+              const percentage = total ? (value / total) * 100 : 0;
+              return percentage > 5 ? percentage.toFixed(0) + "%" : "";
+            }
           },
           tooltip: {
-
             callbacks: {
               label: (ctx) => {
-                const total = ctx.dataset.data.reduce((a,b)=>a+b,0);
+                const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
                 const v = ctx.parsed;
-                const pct = total ? Math.round((v/total)*100) : 0;
+                const pct = total ? Math.round((v / total) * 100) : 0;
                 return `${ctx.label}: ${v} (${pct}%)`;
               }
             }
