@@ -166,6 +166,21 @@ function aggregateOptionsByTask(teams, taskIdsSet) {
   return agg;
 }
 
+function getOrderedLabelsForTask(taskId, optionMap) {
+  const dict = TASK_OPTION_LABELS[taskId];
+  let ordered = [];
+
+  if (dict) {
+    ordered = Object.keys(dict)
+      .map(Number)
+      .sort((a, b) => a - b)
+      .map(k => dict[k]);
+  }
+
+  const extras = Array.from(optionMap.keys()).filter(l => !ordered.includes(l));
+  return ordered.concat(extras);
+}
+
 function buildBarRowsFromAnswersScore(teams) {
   return teams.map(t => ({
     teamId: t.id,
@@ -389,23 +404,26 @@ function drawDonutCharts(teams, taskIds) {
     const el = document.getElementById(canvasId);
     if (!el) continue;
 
-    const labels = Array.from(optionMap.keys());
-    const values = labels.map(l => optionMap.get(l));
+    const labels = getOrderedLabelsForTask(taskId, optionMap);
+    const values = labels.map(l => optionMap.get(l) || 0);
 
     const MAX_SLICES = 10;
     let finalLabels = labels;
     let finalValues = values;
 
     if (labels.length > MAX_SLICES) {
-      const pairs = labels.map((l,i)=>({ label:l, value:values[i] }))
-                          .sort((a,b)=>b.value-a.value);
+      const keptLabels = labels.slice(0, MAX_SLICES - 1);
+      const keptSet = new Set(keptLabels);
 
-      const top = pairs.slice(0, MAX_SLICES - 1);
-      const rest = pairs.slice(MAX_SLICES - 1);
-      const otherSum = rest.reduce((s,p)=>s+p.value,0);
+      const otherSum = labels
+        .filter(l => !keptSet.has(l))
+        .reduce((s, l) => s + (optionMap.get(l) || 0), 0);
 
-      finalLabels = top.map(p=>p.label).concat(["Other"]);
-      finalValues = top.map(p=>p.value).concat([otherSum]);
+      finalLabels = keptLabels.concat(["Other"]);
+      finalValues = keptLabels.map(l => optionMap.get(l) || 0).concat([otherSum]);
+    } else {
+      finalLabels = labels;
+      finalValues = values;
     }
 
     new Chart(el, {
