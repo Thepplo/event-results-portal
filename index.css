@@ -57,7 +57,7 @@ body {
 }
 
 #app {
-    margin-top: 2rem;
+    padding-top: 5rem;
 }
 
 .card { 
@@ -132,6 +132,7 @@ th {
 h1 {
     text-align: center;
     color: var(--text);
+    margin: 0;
 }
 .input-field {
     width: 100%;
