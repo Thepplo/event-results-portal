@@ -48,6 +48,18 @@ body {
     background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
     min-height: 100vh;
 }
+.header {
+    background-image: linear-gradient(
+      to right,
+      rgb(var(--primary-dark) / 0.85),
+      rgb(var(--primary) / 0.95),
+      rgb(var(--primary-dark) / 0.85)
+    );
+    position: sticky;
+    top: 0;
+    z-index: 40;
+    width: 100%;
+}
 
 .card { 
     background-color: var(--surface);
