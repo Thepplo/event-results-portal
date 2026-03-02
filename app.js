@@ -594,12 +594,12 @@ async function run() {
 
     <div class="card">
       <h2>Points per person (Top 5)</h2>
-      <canvas id="barCorrect" height="140"></canvas>
+      <canvas id="barCorrect" height="500"></canvas>
     </div>
 
     <div class="card">
       <h2>How satisfied are you with the overall outcome of your team (1-5)?</h2>
-      <canvas id="satChart" height="120"></canvas>
+      <canvas id="satChart" height="500"></canvas>
     </div>
 
     <div class="card">
