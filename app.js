@@ -371,6 +371,7 @@ function renderDonutCharts(teams) {
     blocks.push(`
       <div class="card">
         <h2>${TASK_LABELS[taskId] || taskId}</h2>
+        <div class="card-meta muted">Based on ${finalValues.reduce((a, b) => a + b, 0)} answers</div>
         <div class="donut-layout">
           <div class="donut-chart">
             <canvas id="${canvasId}"></canvas>
