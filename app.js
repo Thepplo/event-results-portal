@@ -372,8 +372,8 @@ function renderDonutCharts(teams) {
       <div class="card">
         <h2>${TASK_LABELS[taskId] || taskId}</h2>
         <div class="donut-layout">
-          <div style="width:513px;">
-            <canvas id="${canvasId}" height="513px"></canvas>
+          <div class="donut-chart">
+            <canvas id="${canvasId}"></canvas>
           </div>
 
           <div class="muted" style="margin-top:8px;">
@@ -423,6 +423,7 @@ function drawDonutCharts(teams, taskIds) {
       },
       options: {
         responsive: true,
+        maintainAspectRatio: false,
         plugins: {
           legend: { display: false },
           datalabels: {
