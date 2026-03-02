@@ -206,16 +206,21 @@ function parseRatingAndWordFromString(answer) {
   const s = String(answer ?? "").trim();
   if (!s) return { rating: null, word: "" };
 
-  const m = s.match(/^(\d+)\s*(.*)$/);
-  if (!m) return { rating: null, word: s };
+  let m = s.match(/^(\d+)\s*(.*)$/);
+  if (m) {
+    const rating = parseInt(m[1], 10);
+    const word = (m[2] || "").trim();
+    return { rating: Number.isFinite(rating) ? rating : null, word };
+  }
 
-  const rating = parseInt(m[1], 10);
-  const word = (m[2] || "").trim();
+  m = s.match(/^(.*?)\s*(\d+)\s*[^\p{L}\p{N}]*$/u);
+  if (m) {
+    const rating = parseInt(m[2], 10);
+    const word = (m[1] || "").trim();
+    return { rating: Number.isFinite(rating) ? rating : null, word };
+  }
 
-  return {
-    rating: Number.isFinite(rating) ? rating : null,
-    word,
-  };
+  return { rating: null, word: s };
 }
 
 function aggregateMixedTask(teams) {
