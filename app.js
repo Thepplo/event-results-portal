@@ -369,7 +369,7 @@ function renderDonutCharts(teams) {
       computeDonutSeries(taskId, optionMap, 10);
 
     blocks.push(`
-      <div class="donut-card">
+      <div class="card">
         <h3>${TASK_LABELS[taskId] || taskId}</h3>
 
         <div style="max-width:700px;">
@@ -394,7 +394,7 @@ function renderDonutCharts(teams) {
     `);
   }
 
-  return `<div class="donut-grid">${blocks.join("")}</div>`;
+  return blocks.join("");
 }
 
 function drawDonutCharts(teams, taskIds) {
