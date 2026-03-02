@@ -595,12 +595,18 @@ async function run() {
     ${renderDonutCharts(teams, DONUT_TASK_IDS)} 
 
     <div class="card">
-      <h2>Points per person (Top 5)</h2>
+      <div class="card-header">
+        <h2>Points per person</h2>
+        <div class="card-meta muted">Top 5</div>
+        </div>
       <canvas id="barCorrect" height="500"></canvas>
     </div>
 
     <div class="card">
-      <h2>How satisfied are you with the overall outcome of your team (1-5)?</h2>
+      <div class="card-header">
+        <h2>How satisfied are you with the overall outcome of your team?</h2>
+        <div class="card-meta muted">(1-5)</div>
+        </div>
       <canvas id="satChart" height="500"></canvas>
     </div>
 
