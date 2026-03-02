@@ -132,7 +132,7 @@ body {
     box-shadow: var(--shadow-card);
     justify-content: center;
     align-items: center;
-    text-align: center;
+    text-align: left;
 }
 .donut-card { 
     background-color: var(--surface);
@@ -144,7 +144,7 @@ body {
     gap: 1rem;
     justify-content: center;
     align-items: center;
-    text-align: center;
+    text-align: left;
 }
 
 
