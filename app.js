@@ -305,9 +305,15 @@ function drawSatisfactionChart(ratingCounts) {
       responsive: true,
       plugins: { legend: { display: false } },
       scales: {
-        y: { beginAtZero: true, ticks: { precision: 0 } }
+        y: { beginAtZero: true, ticks: { precision: 0 } },
+        x: {
+          ticks: {
+            color: "#F3EDEE",
+            font: { size: 13, weight: "600", family: "Montserrat, sans-serif" },
+          }
       }
     }
+  }
   });
 }
 function drawWordCloud(wordCounts, topN = 30) {
