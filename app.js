@@ -375,20 +375,29 @@ function renderDonutCharts(teams) {
           <div class="donut-chart">
             <canvas id="${canvasId}"></canvas>
           </div>
+          <div class="donut-legend">
+            ${finalLabels.map((label, i) => {
+              const value = finalValues[i];
+              const total = finalValues.reduce((a, b) => a + b, 0);
+              const percent = total ? Math.round((value / total) * 100) : 0;
 
-          <div class="muted" style="margin-top:8px;">
-            ${finalLabels.map((label, i) => `
-              <div style="display:flex; align-items:center; gap:8px; margin:4px 0;">
-                <span style="
-                  width:10px; height:10px; border-radius:2px;
-                  background:${colorForLabel(taskId, label)};
-                  border:1px solid rgba(0,0,0,0.25);
-                  display:inline-block;
-                "></span>
-                <span>${escapeHtml(label)}</span>
-                <span style="margin-left:auto;"><b>${finalValues[i]}</b></span>
-              </div>
-            `).join("")}
+              return `
+                <div class="legend-row">
+                  <span 
+                    class="legend-color"
+                    style="background:${colorForLabel(taskId, label)}">
+                  </span>
+
+                  <span class="legend-label">
+                    ${escapeHtml(label)}
+                  </span>
+
+                  <span class="legend-value">
+                    ${percent}% <span class="legend-count">(${value})</span>
+                  </span>
+                </div>
+              `;
+            }).join("")}
           </div>
         </div>
       </div>

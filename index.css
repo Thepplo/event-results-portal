@@ -65,7 +65,45 @@ body {
   width: 100% !important;
   height: 100% !important;
 }
+.donut-legend {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
 
+.legend-row {
+  display: grid;
+  grid-template-columns: 14px 1fr auto;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  transition: background 0.2s ease;
+}
+
+.legend-row:hover {
+  background: rgba(255,255,255,0.04);
+}
+
+.legend-color {
+  width: 12px;
+  height: 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(0,0,0,0.25);
+}
+
+.legend-label {
+  font-weight: 500;
+}
+
+.legend-value {
+  font-weight: 600;
+}
+
+.legend-count {
+  opacity: 0.6;
+  font-weight: 400;
+}
 .header {
     width: 100%;
     padding: 1rem 0;
