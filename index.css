@@ -131,7 +131,6 @@ body {
     gap: 1rem;
     box-shadow: var(--shadow-card);
     justify-content: center;
-    align-items: center;
     text-align: left;
 }
 .donut-card { 
