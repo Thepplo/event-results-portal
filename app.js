@@ -77,7 +77,7 @@ const TASK_LABEL_TO_INDEX = (() => {
   return out;
 })();
 
-function computeDonutSeries(taskId, optionMap, maxSlices = 10) {
+function computeDonutSeries(taskId, optionMap, maxSlices = 25) {
   const labels = getOrderedLabelsForTask(taskId, optionMap);
   const values = labels.map(l => optionMap.get(l) || 0);
 
