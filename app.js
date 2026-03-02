@@ -370,25 +370,26 @@ function renderDonutCharts(teams) {
 
     blocks.push(`
       <div class="card">
-        <h3>${TASK_LABELS[taskId] || taskId}</h3>
+        <h2>${TASK_LABELS[taskId] || taskId}</h2>
+        <div class="donut-layout">
+          <div style="max-width:700px;">
+            <canvas id="${canvasId}" height="260"></canvas>
+          </div>
 
-        <div style="max-width:700px;">
-          <canvas id="${canvasId}" height="260"></canvas>
-        </div>
-
-        <div class="muted" style="margin-top:8px;">
-          ${finalLabels.map((label, i) => `
-            <div style="display:flex; align-items:center; gap:8px; margin:4px 0;">
-              <span style="
-                width:10px; height:10px; border-radius:2px;
-                background:${colorForLabel(taskId, label)};
-                border:1px solid rgba(0,0,0,0.25);
-                display:inline-block;
-              "></span>
-              <span>${escapeHtml(label)}</span>
-              <span style="margin-left:auto;"><b>${finalValues[i]}</b></span>
-            </div>
-          `).join("")}
+          <div class="muted" style="margin-top:8px;">
+            ${finalLabels.map((label, i) => `
+              <div style="display:flex; align-items:center; gap:8px; margin:4px 0;">
+                <span style="
+                  width:10px; height:10px; border-radius:2px;
+                  background:${colorForLabel(taskId, label)};
+                  border:1px solid rgba(0,0,0,0.25);
+                  display:inline-block;
+                "></span>
+                <span>${escapeHtml(label)}</span>
+                <span style="margin-left:auto;"><b>${finalValues[i]}</b></span>
+              </div>
+            `).join("")}
+          </div>
         </div>
       </div>
     `);

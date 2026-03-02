@@ -48,6 +48,13 @@ body {
     /*background-image: url("Benjamin_Olszewski-8898\ 1.png");
     background-repeat: no-repeat; */
 }
+.donut-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+  align-items: center;
+}
+
 .header {
     width: 100%;
     padding: 1rem 0;
