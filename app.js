@@ -372,8 +372,8 @@ function renderDonutCharts(teams) {
       <div class="card">
         <h2>${TASK_LABELS[taskId] || taskId}</h2>
         <div class="donut-layout">
-          <div>
-            <canvas id="${canvasId}" height="260"></canvas>
+          <div style="width:513px;">
+            <canvas id="${canvasId}" height="513px"></canvas>
           </div>
 
           <div class="muted" style="margin-top:8px;">
