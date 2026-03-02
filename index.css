@@ -45,7 +45,8 @@ body {
     background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
     min-height: 100vh;
     margin: 0;
-    background-image: url("Benjamin_Olszewski-8898\ 1.png");
+    /*background-image: url("Benjamin_Olszewski-8898\ 1.png");
+    background-repeat: no-repeat; */
 }
 .header {
     width: 100%;
