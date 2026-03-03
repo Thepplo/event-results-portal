@@ -293,7 +293,23 @@ function drawAnswersScoreBarChart(teams) {
 
       plugins: {
         legend: { display: false },
-
+        tooltip: {
+          backgroundColor: "#2b2428",
+          titleColor: "#ffffff",
+          bodyColor: "#ffffff",
+          borderColor: "rgba(255,255,255,0.1)",
+          borderWidth: 1,
+          displayColors: false,
+          padding: 10,
+          callbacks: {
+            title: () => "",
+            label: (ctx) => {
+              const team = ctx.label;
+              const score = ctx.parsed.y;
+              return `${team}: ${score} point${score !== 1 ? "s" : ""}`;
+            }
+          }
+        },
         datalabels: {
           anchor: "end",
           align: "end",
@@ -344,7 +360,26 @@ function drawSatisfactionChart(ratingCounts) {
     },
     options: {
       responsive: true,
-      plugins: { legend: { display: false } },
+      plugins: { 
+        legend: { display: false },
+        tooltip: {
+          backgroundColor: "#2b2428",
+          titleColor: "#ffffff",
+          bodyColor: "#ffffff",
+          borderColor: "rgba(255,255,255,0.1)",
+          borderWidth: 1,
+          displayColors: false,
+          padding: 10,
+/*           callbacks: {
+            title: () => "",
+            label: (ctx) => {
+              const team = ctx.label;
+              const score = ctx.parsed.y;
+              return `${team}: ${score} point${score !== 1 ? "s" : ""}`;
+            }
+          } */
+        },
+      },
       scales: {
         y: { beginAtZero: true, ticks: { precision: 0 } },
         x: {
