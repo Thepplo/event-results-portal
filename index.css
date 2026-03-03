@@ -102,7 +102,13 @@ body {
 .legend-row:hover {
   background: rgba(255,255,255,0.04);
 }
+.legend-row--top .legend-label {
+  font-weight: 600;
+}
 
+.legend-row--top .legend-color {
+  box-shadow: 0 0 0 2px #fff;
+}
 .legend-color {
   width: 12px;
   height: 12px;

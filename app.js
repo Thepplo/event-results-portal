@@ -366,7 +366,11 @@ function renderDonutCharts(teams) {
     const canvasId = `chart_${safeId}`;
 
     const { labels: finalLabels, values: finalValues } =
-      computeDonutSeries(taskId, optionMap, 10);
+      computeDonutSeries(taskId, optionMap, 25);
+
+    const total = finalValues.reduce((a, b) => a + b, 0);
+    const maxIndex = finalValues.indexOf(Math.max(...finalValues));
+
 
     blocks.push(`
       <div class="card">
@@ -381,11 +385,11 @@ function renderDonutCharts(teams) {
           <div class="donut-legend">
             ${finalLabels.map((label, i) => {
               const value = finalValues[i];
-              const total = finalValues.reduce((a, b) => a + b, 0);
               const percent = total ? Math.round((value / total) * 100) : 0;
+              const topClass = i === maxIndex ? " legend-row--top" : "";
 
               return `
-                <div class="legend-row">
+                <div class="legend-row${topClass}">
                   <span 
                     class="legend-color"
                     style="background:${colorForLabel(taskId, label)}">
