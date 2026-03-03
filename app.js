@@ -301,10 +301,11 @@ function drawAnswersScoreBarChart(teams) {
             size: 14
           },
 
-          formatter: (value) => value // just show score
+          formatter: (value) => value
         }
       }
     },
+    plugins: [ChartDataLabels]
     
   });
 }
