@@ -64,6 +64,14 @@ body {
     padding: 10px;
 }
 
+.logo-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 1rem;
+    position: sticky;
+    top: 5px;
+}
 
 .donut-chart canvas {
   width: 100% !important;
