@@ -414,7 +414,7 @@ function renderDonutCharts(teams) {
   return blocks.join("");
 }
 
-function drawDonutCharts(teams, taskIds) {
+/* function drawDonutCharts(teams, taskIds) {
   const taskAgg = aggregateOptionsByTask(teams, taskIds);
   
 
@@ -470,7 +470,7 @@ function drawDonutCharts(teams, taskIds) {
       plugins: [ChartDataLabels]
     });
   }
-}
+} */
 
 function drawDonutChart(taskId, optionMap) {
   const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
@@ -497,7 +497,7 @@ function drawDonutChart(taskId, optionMap) {
         backgroundColor: finalLabels.map(label => colorForLabel(taskId, label)),
         borderColor: "#4A4046",
         borderWidth: 1,
-        hoverOffset: 2
+        hoverOffset: 8
       }],
     },
     options: {
