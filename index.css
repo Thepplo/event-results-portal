@@ -126,8 +126,8 @@ body {
 
 .legend-row--top .legend-color {
   box-shadow:
-    0 0 0 2px currentColor,
-    0 0 8px currentColor;
+    0 0 0 2px var(--legend-color),
+    0 0 8px var(--legend-color);
 }
 
 .legend-color {
