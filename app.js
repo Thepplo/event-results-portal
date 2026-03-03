@@ -390,14 +390,26 @@ function drawWordCloud(wordCounts, topN = 30) {
         minRotation: -Math.PI / 10,
         maxRotation:  -Math.PI / 10,
         rotationSteps: 3,
-        padding: 5,
+        padding: 10,
       }],
     },
     options: {
       responsive: true,
       maintainAspectRatio: false,
-      plugins: { legend: { display: false } },
-      layout: { padding: 8 },
+      plugins: {
+        legend: { display: false },
+        tooltip: {
+          displayColors: false,
+          callbacks: {
+            label: (ctx) => {
+              const word = ctx.label;
+              const count = data[ctx.dataIndex];
+              return `${word}: ${count} response${count !== 1 ? "s" : ""}`;
+            }
+          }
+        }
+      },
+      layout: { padding: 10 },
     },
   });
 
