@@ -392,7 +392,7 @@ function renderDonutCharts(teams) {
                 <div class="legend-row${topClass}">
                   <span 
                     class="legend-color"
-                    style="background:${colorForLabel(taskId, label)}">
+                    style="--legend-color:${colorForLabel(taskId, label)}">
                   </span>
 
                   <span class="legend-label">
