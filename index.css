@@ -73,7 +73,7 @@ body {
     display: flex;
     align-items: center;
     margin-left: 5rem;
-    position: relative;
+    position: absolute;
     top: 0px;
     left: 5rem;
     z-index: 1000;
@@ -180,6 +180,7 @@ body {
     justify-content: center;
     text-align: left;
     max-height: 800px;
+    min-height: 500px;
 }
 .donut-card { 
     background-color: var(--surface);
