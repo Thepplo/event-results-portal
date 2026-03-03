@@ -743,8 +743,10 @@ async function run() {
     ratingCounts,
     wordCounts,
   });
+  
+  setupLazyDonuts(teams, DONUT_TASK_IDS)
 }
-setupLazyDonuts(teams, DONUT_TASK_IDS)
+
 run().catch(err => {
   document.getElementById("app").textContent = `Error: ${err.message}`;
 });
