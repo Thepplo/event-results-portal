@@ -471,6 +471,39 @@ function renderDonutCharts(teams) {
     });
   }
 } */
+function withAlpha(color, alpha) {
+  if (!color) return color;
+
+  if (color[0] === "#") {
+    let hex = color.slice(1);
+    if (hex.length === 3) hex = hex.split("").map(c => c + c).join("");
+    const r = parseInt(hex.slice(0, 2), 16);
+    const g = parseInt(hex.slice(2, 4), 16);
+    const b = parseInt(hex.slice(4, 6), 16);
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  const m = color.match(/rgba?\(([^)]+)\)/);
+  if (m) {
+    const parts = m[1].split(",").map(s => s.trim());
+    const [r, g, b] = parts;
+    return `rgba(${r}, ${g}, ${b}, ${alpha})`;
+  }
+
+  return color;
+}
+
+function focusSlice(chart, baseColors, activeIndex) {
+  const dimmed = baseColors.map((c, i) => (i === activeIndex ? c : withAlpha(c, 0.35)));
+  chart.data.datasets[0].backgroundColor = dimmed;
+  chart.update("none");
+}
+
+
+function clearFocus(chart, baseColors) {
+  chart.data.datasets[0].backgroundColor = baseColors.slice();
+  chart.update("none");
+}
 
 function drawDonutChart(taskId, optionMap) {
   const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
@@ -487,6 +520,8 @@ function drawDonutChart(taskId, optionMap) {
 
   const { labels: finalLabels, values: finalValues } =
     computeDonutSeries(taskId, optionMap, 10);
+
+  const baseColors = finalLabels.map(l => colorForLabel(taskId, l));
 
   el.__chart = new Chart(el, {
     type: "doughnut",
@@ -532,6 +567,10 @@ function drawDonutChart(taskId, optionMap) {
     },
     plugins: [ChartDataLabels]
   });
+
+  el.__baseColors = baseColors;
+  el.__chart = chart;
+
   const chart = el.__chart;
   const card = el.closest(".card");
   const legend = card.querySelector(".donut-legend");
@@ -544,12 +583,15 @@ function drawDonutChart(taskId, optionMap) {
 
     chart.setActiveElements([{ datasetIndex: 0, index: i }]);
     chart.tooltip.setActiveElements([{ datasetIndex: 0, index: i }], { x: 0, y: 0 });
-    chart.update();
+    focusSlice(chart, baseColors, i);
+    chart.update("none");
+    
   });
 
   legend.addEventListener("mouseout", () => {
     chart.setActiveElements([]);
     chart.tooltip.setActiveElements([], { x: 0, y: 0 });
+    focusSlice(chart, baseColors, i);
     chart.update();
   });
 }
