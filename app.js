@@ -269,17 +269,43 @@ function drawAnswersScoreBarChart(teams) {
     },
     options: {
       responsive: true,
-      plugins: { legend: { display: false } },
+      maintainAspectRatio: false,
+
       scales: {
-        y: { beginAtZero: true, ticks: { precision: 0 } },
+        y: {
+          beginAtZero: true,
+          ticks: { precision: 0 }
+        },
         x: {
           ticks: {
             color: "#F3EDEE",
             font: { size: 13, weight: "600", family: "Montserrat, sans-serif" },
           }
         }
+      },
+
+      plugins: {
+        legend: { display: false },
+
+        datalabels: {
+          anchor: "end",
+          align: "end",
+          offset: 4,
+
+          color: "#ffffff",
+          textShadowColor: "rgba(0,0,0,0.4)",
+          textShadowBlur: 4,
+
+          font: {
+            weight: "600",
+            size: 14
+          },
+
+          formatter: (value) => value // just show score
+        }
       }
-    }
+    },
+    
   });
 }
 function drawSatisfactionChart(ratingCounts) {
