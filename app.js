@@ -585,19 +585,21 @@ function drawDonutChart(taskId, optionMap) {
     const i = Number(row.dataset.index);
 
     chart.setActiveElements([{ datasetIndex: 0, index: i }]);
-    chart.tooltip.setActiveElements([{ datasetIndex: 0, index: i }], { x: 0, y: 0 });
+    //chart.tooltip.setActiveElements([{ datasetIndex: 0, index: i }], { x: 0, y: 0 });
     focusSlice(chart, baseColors, i);
-    chart.update("none");
+    chart.update();
     
   });
 
   legend.addEventListener("mouseout", () => {
+    if (e.relatedTarget && legend.contains(e.relatedTarget)) return;
     chart.setActiveElements([]);
-    chart.tooltip.setActiveElements([], { x: 0, y: 0 });
-    clearFocus(chart, baseColors, i);
+    //chart.tooltip.setActiveElements([], { x: 0, y: 0 });
+    clearFocus(chart, baseColors);
     chart.update();
   });
 }
+
 function escapeHtml(str) {
   return String(str)
     .replaceAll("&", "&amp;")
