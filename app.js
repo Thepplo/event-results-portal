@@ -780,7 +780,7 @@ function setupLazyDonuts(teams, taskIds) {
 
       io.unobserve(card);
     }
-  }, {rootMargin: "0px", threshold: 0.4});
+  }, {rootMargin: "-100px 0px", threshold: 0.4});
 
   cards.forEach(c => io.observe(c));
 }
