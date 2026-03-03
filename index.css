@@ -176,9 +176,17 @@ body {
   height: 2px;
   opacity: 0.6;
 
-  background: linear-gradient(90deg, #4F3F49, #f4c430, #4F3F49);
-  background-size: 200% 100%;
-  animation: moveLine 45s ease-in-out infinite alternate;
+  background: linear-gradient(
+    90deg,
+    #2d52b5,
+    #f4c430,
+    #e63946,
+    #8b0036,
+    #2d52b5
+  );
+
+  background-size: 300% 100%;
+  animation: moveLine 20s ease-in-out infinite alternate;
 }
 
 @keyframes moveBg {
