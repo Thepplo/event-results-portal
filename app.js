@@ -370,7 +370,7 @@ function renderDonutCharts(teams) {
 
     const total = finalValues.reduce((a, b) => a + b, 0);
     const maxIndex = finalValues.indexOf(Math.max(...finalValues));
-
+    
 
     blocks.push(`
       <div class="card" data-chart="donut" data-task-id="${taskId}">
@@ -389,7 +389,7 @@ function renderDonutCharts(teams) {
               const topClass = i === maxIndex ? " legend-row--top" : "";
 
               return `
-                <div class="legend-row${topClass}">
+                <div data-index="${i}" class="legend-row${topClass}">
                   <span 
                     class="legend-color"
                     style="--legend-color:${colorForLabel(taskId, label)}">
@@ -530,6 +530,26 @@ function drawDonutChart(taskId, optionMap) {
       }
     },
     plugins: [ChartDataLabels]
+  });
+  const chart = el.__chart;
+  const card = el.closest(".card");
+  const legend = card.querySelector(".donut-legend");
+  if (!legend) return;
+  
+  legendEl.addEventListener("mouseover", (e) => {
+    const row = e.target.closest(".legend-row");
+    if (!row) return;
+    const i = Number(row.dataset.index);
+
+    chart.setActiveElements([{ datasetIndex: 0, index: i }]);
+    chart.tooltip.setActiveElements([{ datasetIndex: 0, index: i }], { x: 0, y: 0 });
+    chart.update();
+  });
+
+  legendEl.addEventListener("mouseout", () => {
+    chart.setActiveElements([]);
+    chart.tooltip.setActiveElements([], { x: 0, y: 0 });
+    chart.update();
   });
 }
 function escapeHtml(str) {
