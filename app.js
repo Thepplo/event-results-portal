@@ -591,7 +591,7 @@ function drawDonutChart(taskId, optionMap) {
     
   });
 
-  legend.addEventListener("mouseout", () => {
+  legend.addEventListener("mouseout", (e) => {
     if (e.relatedTarget && legend.contains(e.relatedTarget)) return;
     chart.setActiveElements([]);
     //chart.tooltip.setActiveElements([], { x: 0, y: 0 });
