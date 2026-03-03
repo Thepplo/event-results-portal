@@ -535,8 +535,8 @@ function drawDonutChart(taskId, optionMap) {
   const card = el.closest(".card");
   const legend = card.querySelector(".donut-legend");
   if (!legend) return;
-  
-  legendEl.addEventListener("mouseover", (e) => {
+
+  legend.addEventListener("mouseover", (e) => {
     const row = e.target.closest(".legend-row");
     if (!row) return;
     const i = Number(row.dataset.index);
@@ -546,7 +546,7 @@ function drawDonutChart(taskId, optionMap) {
     chart.update();
   });
 
-  legendEl.addEventListener("mouseout", () => {
+  legend.addEventListener("mouseout", () => {
     chart.setActiveElements([]);
     chart.tooltip.setActiveElements([], { x: 0, y: 0 });
     chart.update();
