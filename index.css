@@ -167,6 +167,11 @@ body {
     animation: moveBg 20s linear infinite;
 }
 
+@keyframes moveBg {
+  0%   { background-position: 0% 50%; }
+  100% { background-position: 200% 50%; }
+}
+
 #app {
     padding-top: 5rem;
     margin: 24px auto;
