@@ -539,7 +539,7 @@ function drawDonutChart(taskId, optionMap) {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
-        //duration: 150,
+        duration: 600,
         easing: "easeOutQuad",
       },
       plugins: {
