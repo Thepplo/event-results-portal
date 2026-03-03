@@ -399,7 +399,13 @@ function drawWordCloud(wordCounts, topN = 30) {
       plugins: {
         legend: { display: false },
         tooltip: {
-          displayColors: false,
+            backgroundColor: "#2b2428",
+            titleColor: "#ffffff",
+            bodyColor: "#ffffff",
+            borderColor: "rgba(255,255,255,0.1)",
+            borderWidth: 1,
+            displayColors: false,
+            padding: 10,
           callbacks: {
             label: (ctx) => {
               const word = ctx.label;
