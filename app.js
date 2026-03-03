@@ -542,6 +542,9 @@ function drawDonutChart(taskId, optionMap) {
         duration: 600,
         easing: "easeOutQuad",
       },
+      hover: {
+          animationDuration: 150
+        },
       plugins: {
         legend: { display: false },
         datalabels: {
@@ -557,9 +560,7 @@ function drawDonutChart(taskId, optionMap) {
           }
         },
         tooltip: { enabled: false },
-        hover: {
-          animationDuration: 150
-        }
+
         /* tooltip: {
           callbacks: {
             label: (ctx) => {
