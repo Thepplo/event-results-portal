@@ -20,9 +20,9 @@ const INCLUDED_TASK_IDS = new Set([
 const TASK_OPTION_LABELS = {
   "Tj4VO5V_f": {
     0: "Was there a brief?",
-    1: "Unlock all Modules",
+    1: "Gather all Superfoods",
     2: "I don't know",
-    3: "Unlock all my allotted Modules",
+    3: "Gather all my allotted Superfoods",
   },
 
   "teu-Hoocx": {

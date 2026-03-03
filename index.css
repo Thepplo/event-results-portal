@@ -43,10 +43,11 @@
 body {
     font-family: "Montserrat", sans-serif; 
     background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
-    min-height: 100vh;
+    height: 100vh;
     margin: 0;
-    /*background-image: url("Benjamin_Olszewski-8898\ 1.png");
-    background-repeat: no-repeat; */
+    background-image: url("Benjamin_Olszewski-8898\ 1.png");
+    background-repeat: no-repeat;
+    background-size: cover;
 }
 .donut-layout {
   display: grid;
@@ -59,6 +60,8 @@ body {
     width: 420px;
     height: 420px;
     margin: 0 auto;
+    border-radius: 100%;
+    padding: 10px;
 }
 
 
@@ -107,7 +110,7 @@ body {
 }
 
 .legend-row--top .legend-color {
-  box-shadow: 0 0 0 2px #fff;
+  box-shadow: 0 0 0 1px #fff;
 }
 .legend-color {
   width: 12px;
