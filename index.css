@@ -43,11 +43,11 @@
 body {
     font-family: "Montserrat", sans-serif; 
     background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
-    height: 100vh;
+    min-height: 100vh;
     margin: 0;
-    background-image: url("Benjamin_Olszewski-8898\ 1.png");
+    /*background-image: url("Benjamin_Olszewski-8898\ 1.png");
     background-repeat: no-repeat;
-    background-size: cover;
+    background-size: cover;*/
 }
 .donut-layout {
   display: grid;
@@ -135,7 +135,7 @@ body {
     width: 100%;
     padding: 1rem 0;
     display: flex;
-    height: 10rem;
+    height: 5rem;
     background-color: var(--glass-bg);
     align-items: center;
     justify-content: center;
