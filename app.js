@@ -373,7 +373,7 @@ function renderDonutCharts(teams) {
 
 
     blocks.push(`
-      <div class="card" data-chart="donut">
+      <div class="card" data-chart="donut" data-task-id="${taskId}">
         <div class="card-header">
           <h2>${TASK_LABELS[taskId] || taskId}</h2>
           <div class="card-meta muted">Based on ${finalValues.reduce((a, b) => a + b, 0)} responses</div>
@@ -416,6 +416,7 @@ function renderDonutCharts(teams) {
 
 function drawDonutCharts(teams, taskIds) {
   const taskAgg = aggregateOptionsByTask(teams, taskIds);
+  
 
   for (const [taskId, optionMap] of taskAgg.entries()) {
     const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
@@ -471,6 +472,66 @@ function drawDonutCharts(teams, taskIds) {
   }
 }
 
+function drawDonutChart(taskId, optionMap) {
+  const canvasId = `chart_${taskId.replace(/[^a-zA-Z0-9_]/g, "_")}`;
+  const el = document.getElementById(canvasId);
+  if (!el) return;
+
+  if (el.dataset.drawn === "1") return;
+  el.dataset.drawn = "1";
+
+  if (el.__chart) {
+    el.__chart.destroy();
+    el.__chart = null;
+  }
+
+  const { labels: finalLabels, values: finalValues } =
+    computeDonutSeries(taskId, optionMap, 10);
+
+  el.__chart = new Chart(el, {
+    type: "doughnut",
+    data: {
+      labels: finalLabels,
+      datasets: [{
+        data: finalValues,
+        backgroundColor: finalLabels.map(label => colorForLabel(taskId, label)),
+        borderColor: "#4A4046",
+        borderWidth: 1,
+        hoverOffset: 2
+      }],
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: { display: false },
+        datalabels: {
+          color: "#ffffff",
+          textShadowColor: "rgba(0,0,0,0.4)",
+          textShadowBlur: 4,
+          font: { weight: "600", size: 14 },
+          formatter: (value, context) => {
+            const data = context.chart.data.datasets[0].data;
+            const total = data.reduce((a, b) => a + b, 0);
+            const percentage = total ? (value / total) * 100 : 0;
+            return percentage > 5 ? percentage.toFixed(0) + "%" : "";
+          }
+        },
+        tooltip: {
+          callbacks: {
+            label: (ctx) => {
+              const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
+              const v = ctx.parsed;
+              const pct = total ? Math.round((v / total) * 100) : 0;
+              return `${ctx.label}: ${v} (${pct}%)`;
+            }
+          }
+        }
+      }
+    },
+    plugins: [ChartDataLabels]
+  });
+}
 function escapeHtml(str) {
   return String(str)
     .replaceAll("&", "&amp;")
@@ -551,7 +612,6 @@ function setupLazyChartDrawing({ teams, ratingCounts, wordCounts, donutTaskIds }
     ["barCorrect", () => drawAnswersScoreBarChart(teams)],
     ["satChart", () => drawSatisfactionChart(ratingCounts)],
     ["wordCloud", () => drawWordCloud(wordCounts)],
-    ["donut", () => drawDonutCharts(teams, donutTaskIds)],
   ]);
 
   const observer = new IntersectionObserver(
@@ -573,7 +633,7 @@ function setupLazyChartDrawing({ teams, ratingCounts, wordCounts, donutTaskIds }
     },
     {
       root: null,
-      rootMargin: "200px 0px",
+      rootMargin: "50px 0px",
       threshold: 0.1,
     }
   );
@@ -581,6 +641,28 @@ function setupLazyChartDrawing({ teams, ratingCounts, wordCounts, donutTaskIds }
   document.querySelectorAll("[data-chart]").forEach((el) => observer.observe(el));
 }
 
+function setupLazyDonuts(teams, taskIds) {
+  const taskAgg = aggregateOptionsByTask(teams, taskIds);
+
+  const cards = document.querySelectorAll('.card[data-chart="donut"]');
+  if (!cards.length) return;
+
+  const io = new IntersectionObserver((entries) => {
+    for (const e of entries) {
+      if (!e.isIntersecting) continue;
+
+      const card = e.target;
+      const taskId = card.getAttribute("data-task-id");
+      const optionMap = taskAgg.get(taskId);
+
+      if (taskId && optionMap) drawDonutChart(taskId, optionMap);
+
+      io.unobserve(card);
+    }
+  }, { rootMargin: "50px 0px", threshold: 0.1 });
+
+  cards.forEach(c => io.observe(c));
+}
 
 async function run() {
   const app = document.getElementById("app");
@@ -660,10 +742,9 @@ async function run() {
     teams,
     ratingCounts,
     wordCounts,
-    donutTaskIds: DONUT_TASK_IDS,
   });
 }
-
+setupLazyDonuts(teams, DONUT_TASK_IDS)
 run().catch(err => {
   document.getElementById("app").textContent = `Error: ${err.message}`;
 });
