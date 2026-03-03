@@ -373,7 +373,7 @@ function renderDonutCharts(teams) {
 
 
     blocks.push(`
-      <div class="card">
+      <div class="card" data-chart="donut">
         <div class="card-header">
           <h2>${TASK_LABELS[taskId] || taskId}</h2>
           <div class="card-meta muted">Based on ${finalValues.reduce((a, b) => a + b, 0)} responses</div>
@@ -546,6 +546,42 @@ function renderTeam(team) {
   `;
 }
 
+function setupLazyChartDrawing({ teams, ratingCounts, wordCounts, donutTaskIds }) {
+  const drawers = new Map([
+    ["barCorrect", () => drawAnswersScoreBarChart(teams)],
+    ["satChart", () => drawSatisfactionChart(ratingCounts)],
+    ["wordCloud", () => drawWordCloud(wordCounts)],
+    ["donut", () => drawDonutCharts(teams, donutTaskIds)],
+  ]);
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+
+        const el = entry.target;
+        const key = el.getAttribute("data-chart");
+        const draw = drawers.get(key);
+
+        if (draw && !el.dataset.drawn) {
+          el.dataset.drawn = "1";
+          draw();
+        }
+
+        observer.unobserve(el);
+      }
+    },
+    {
+      root: null,
+      rootMargin: "200px 0px",
+      threshold: 0.1,
+    }
+  );
+
+  document.querySelectorAll("[data-chart]").forEach((el) => observer.observe(el));
+}
+
+
 async function run() {
   const app = document.getElementById("app");
 
@@ -598,7 +634,7 @@ async function run() {
 
     ${renderDonutCharts(teams, DONUT_TASK_IDS)} 
 
-    <div class="card">
+    <div class="card" data-chart="barCorrect">
       <div class="card-header">
         <h2>Points per person</h2>
         <div class="card-meta muted">Top 5</div>
@@ -606,7 +642,7 @@ async function run() {
       <canvas id="barCorrect" height="500"></canvas>
     </div>
 
-    <div class="card">
+    <div class="card" data-chart="satChart">
       <div class="card-header">
         <h2>How satisfied are you with the overall outcome of your team?</h2>
         <div class="card-meta muted">(1-5)</div>
@@ -614,16 +650,18 @@ async function run() {
       <canvas id="satChart" height="500"></canvas>
     </div>
 
-    <div class="card">
+    <div class="card" data-chart="wordCloud">
       <h2>One-word experience</h2>
       <canvas id="wordCloudCanvas" style="height: 500px; max-height: 500px; width: 100%;"></canvas>
     </div>
   `;
 
-  drawAnswersScoreBarChart(teams)
-  drawSatisfactionChart(ratingCounts);
-  drawWordCloud(wordCounts);
-  drawDonutCharts(teams, DONUT_TASK_IDS);
+  setupLazyChartDrawing({
+    teams,
+    ratingCounts,
+    wordCounts,
+    donutTaskIds: DONUT_TASK_IDS,
+  });
 }
 
 run().catch(err => {
