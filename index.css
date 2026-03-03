@@ -41,9 +41,7 @@
 }
 @font-face {
   font-family: "q5-heading";
-  src: url("/assets/fonts/AndQFive_Headlinefont_Thick.ttf") format("truetype");
-  font-style: normal;
-  font-display: swap;
+  src: url("./assets/fonts/AndQFive_Headlinefont_SiteHead.ttf") format("truetype");
 }
 
 
@@ -181,6 +179,7 @@ body {
         0 8px 24px rgba(0,0,0,0.35);
     justify-content: center;
     text-align: left;
+    max-height: fit-content;
 }
 .donut-card { 
     background-color: var(--surface);
