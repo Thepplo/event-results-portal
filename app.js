@@ -556,7 +556,10 @@ function drawDonutChart(taskId, optionMap) {
             return percentage > 5 ? percentage.toFixed(0) + "%" : "";
           }
         },
-        tooltip: { enabled: false }
+        tooltip: { enabled: false },
+        hover: {
+          animationDuration: 150
+        }
         /* tooltip: {
           callbacks: {
             label: (ctx) => {
