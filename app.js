@@ -265,6 +265,13 @@ function drawAnswersScoreBarChart(teams) {
         ),
         borderColor: "#4A4046",
         borderWidth: 1,
+        borderRadius: {
+          topLeft: 8,
+          topRight: 8,
+          bottomLeft: 0,
+          bottomRight: 0
+        },
+        borderSkipped: false
       }],
     },
     options: {
@@ -325,7 +332,14 @@ function drawSatisfactionChart(ratingCounts) {
         data: values,
         backgroundColor: labels.map((_, i) => CHART_COLORS[i % CHART_COLORS.length]),
         borderColor: "#4A4046",
-        borderWidth: 2,
+        borderWidth: 1,
+        borderRadius: {
+          topLeft: 8,
+          topRight: 8,
+          bottomLeft: 0,
+          bottomRight: 0
+        },
+        borderSkipped: false
       }],
     },
     options: {
