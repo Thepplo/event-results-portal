@@ -633,8 +633,8 @@ function setupLazyChartDrawing({ teams, ratingCounts, wordCounts, donutTaskIds }
     },
     {
       root: null,
-      rootMargin: "50px 0px",
-      threshold: 0.1,
+      rootMargin: "-100px 0px",
+      threshold: 0.4,
     }
   );
 
@@ -659,7 +659,7 @@ function setupLazyDonuts(teams, taskIds) {
 
       io.unobserve(card);
     }
-  }, { rootMargin: "50px 0px", threshold: 0.1 });
+  }, {rootMargin: "-100px 0px", threshold: 0.4});
 
   cards.forEach(c => io.observe(c));
 }
@@ -743,7 +743,7 @@ async function run() {
     ratingCounts,
     wordCounts,
   });
-  
+
   setupLazyDonuts(teams, DONUT_TASK_IDS)
 }
 
