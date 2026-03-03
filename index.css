@@ -66,11 +66,11 @@ body {
 
 .logo-container {
     display: flex;
-    justify-content: center;
     align-items: center;
-    margin-bottom: 1rem;
+    margin: 15px;
     position: sticky;
-    top: 5px;
+    top: 15px;
+    left: 15px;
 }
 
 .donut-chart canvas {
@@ -147,6 +147,8 @@ body {
     background-color: var(--glass-bg);
     align-items: center;
     justify-content: center;
+    position: absolute;
+    top: 0;
 }
 
 #app {
