@@ -517,7 +517,8 @@ function drawDonutChart(taskId, optionMap) {
             return percentage > 5 ? percentage.toFixed(0) + "%" : "";
           }
         },
-        tooltip: {
+        tooltip: { enabled: false }
+        /* tooltip: {
           callbacks: {
             label: (ctx) => {
               const total = ctx.dataset.data.reduce((a, b) => a + b, 0);
@@ -526,7 +527,7 @@ function drawDonutChart(taskId, optionMap) {
               return `${ctx.label}: ${v} (${pct}%)`;
             }
           }
-        }
+        } */
       }
     },
     plugins: [ChartDataLabels]
