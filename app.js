@@ -433,8 +433,8 @@ function drawDonutCharts(teams, taskIds) {
         datasets: [{
           data: finalValues,
           backgroundColor: finalLabels.map(label => colorForLabel(taskId, label)),
-          borderColor: "#4A4046",
-          borderWidth: 1,
+          borderColor: "#3a3237",
+          borderWidth: 2,
           hoverOffset: 2
         }],
       },
