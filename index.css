@@ -67,6 +67,7 @@ body {
     margin: 0 auto;
     border-radius: 100%;
     padding: 15px;
+    filter: drop-shadow(0 10px 18px rgba(0,0,0,0.4));
 }
 
 .logo-container {
@@ -83,7 +84,6 @@ body {
 .donut-chart canvas {
   width: 100% !important;
   height: 100% !important;
-  filter: drop-shadow(0 8px 16px rgba(0,0,0,0.35));
 
 }
 .donut-legend {
