@@ -566,10 +566,9 @@ function drawDonutChart(taskId, optionMap) {
       }
     },
     plugins: [ChartDataLabels]
+    
   });
 
-  el.__baseColors = baseColors;
-  el.__chart = chart;
 
   const chart = el.__chart;
   const card = el.closest(".card");
