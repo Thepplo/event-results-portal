@@ -496,13 +496,13 @@ function withAlpha(color, alpha) {
 function focusSlice(chart, baseColors, activeIndex) {
   const dimmed = baseColors.map((c, i) => (i === activeIndex ? c : withAlpha(c, 0.35)));
   chart.data.datasets[0].backgroundColor = dimmed;
-  chart.update("none");
+  chart.update();
 }
 
 
 function clearFocus(chart, baseColors) {
   chart.data.datasets[0].backgroundColor = baseColors.slice();
-  chart.update("none");
+  chart.update();
 }
 
 function drawDonutChart(taskId, optionMap) {
@@ -538,6 +538,10 @@ function drawDonutChart(taskId, optionMap) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+      animation: {
+        duration: 150,
+        easing: "easeOutQuad",
+      },
       plugins: {
         legend: { display: false },
         datalabels: {
@@ -583,14 +587,14 @@ function drawDonutChart(taskId, optionMap) {
     chart.setActiveElements([{ datasetIndex: 0, index: i }]);
     chart.tooltip.setActiveElements([{ datasetIndex: 0, index: i }], { x: 0, y: 0 });
     focusSlice(chart, baseColors, i);
-    chart.update();
+    chart.update("none");
     
   });
 
   legend.addEventListener("mouseout", () => {
     chart.setActiveElements([]);
     chart.tooltip.setActiveElements([], { x: 0, y: 0 });
-    focusSlice(chart, baseColors, i);
+    clearFocus(chart, baseColors, i);
     chart.update();
   });
 }
