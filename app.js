@@ -59,11 +59,11 @@ const TASK_LABELS = {
  };
 
 const CHART_COLORS = [
-  "#2d52b5",
   "#3e95eb",
   "#f4c430",
   "#e53846",
   "#770136",
+  "#2d52b5",
 ];
 
 const TASK_LABEL_TO_INDEX = (() => {
