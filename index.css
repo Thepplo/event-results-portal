@@ -293,3 +293,12 @@ h2 {
     flex-wrap: wrap; 
     align-items: center; 
 }
+.chart-box {
+  height: 500px;
+  position: relative;
+}
+
+.chart-box canvas {
+  width: 100% !important;
+  height: 100% !important;
+}

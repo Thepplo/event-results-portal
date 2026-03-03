@@ -721,7 +721,9 @@ async function run() {
         <h2>Points per person</h2>
         <div class="card-meta muted">Top 5</div>
         </div>
-      <canvas id="barCorrect" height="500"></canvas>
+      <div class="chart-box">
+        <canvas id="barCorrect"></canvas>
+      </div>
     </div>
 
     <div class="card" data-chart="satChart">
@@ -729,7 +731,9 @@ async function run() {
         <h2>How satisfied are you with the overall outcome of your team?</h2>
         <div class="card-meta muted">(1-5)</div>
         </div>
-      <canvas id="satChart" height="500"></canvas>
+      <div class="chart-box">
+        <canvas id="satChart"></canvas>
+      </div>
     </div>
 
     <div class="card" data-chart="wordCloud">
