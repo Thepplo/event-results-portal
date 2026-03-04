@@ -646,20 +646,13 @@ function drawDonutChart(taskId, optionMap) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
-
       animation: {
-        duration: 600,
+        duration: 1000,
         easing: "easeOutQuad",
       },
-
-      animations: {
-        colors: {
-          duration: 150
+      hover: {
+          animationDuration: 150
         },
-        numbers: {
-          duration: 150
-        }
-      },
       plugins: {
         legend: { display: false },
         datalabels: {
@@ -673,13 +666,7 @@ function drawDonutChart(taskId, optionMap) {
             },
           textShadowColor: "rgba(0,0,0,0.4)",
           textShadowBlur: 4,
-          font: (ctx) => {
-            const active = ctx.chart.$activeSlice;
-            return {
-              weight: "600",
-              size: active === ctx.dataIndex ? 16 : 14
-            };
-          },
+          font: { weight: "600", size: 14 },
           formatter: (value, context) => {
             const data = context.chart.data.datasets[0].data;
             const total = data.reduce((a, b) => a + b, 0);
