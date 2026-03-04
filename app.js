@@ -459,7 +459,7 @@ function renderDonutCharts(teams) {
   const donutAgg = aggregateOptionsByTask(teams, new Set(DONUT_TASK_IDS));
 
   if (!donutAgg.size) {
-    return `<div class="card"><h3>Survey Charts</h3><p class="muted">No answers found for selected tasks.</p></div>`;
+    return `<div class="card"><h3>Survey Charts</h3><p class="muted">No answers found for selected tasks. Try hard refreshing (CTRL + R)</p></div>`;
   }
 
   const blocks = [];
