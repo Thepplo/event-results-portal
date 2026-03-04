@@ -264,9 +264,9 @@ body {
   align-items: center;
   justify-content: center;
   position: relative;
+  background: url("./assets/Benjamin_Olszewski-8898\ 1.png");
   background-size: cover;
   background-repeat: no-repeat;
-  background: url("./assets/Benjamin_Olszewski-8898\ 1.png");
 }
 
 .login-page::before {
@@ -293,8 +293,6 @@ body {
   box-shadow: var(--shadow-card);
   justify-content: center;
   align-items: center;
-  margin-top: 8rem;
-  margin: 24px auto;
 }
 
 .muted { 
