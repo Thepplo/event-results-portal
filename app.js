@@ -603,14 +603,14 @@ function focusSlice(chart, baseColors, activeIndex) {
   );
 
   chart.data.datasets[0].backgroundColor = dimmed;
-  chart.update();
+  chart.update("none");
 }
 
 
 function clearFocus(chart, baseColors) {
   chart.$activeSlice = null;
   chart.data.datasets[0].backgroundColor = baseColors.slice();
-  chart.update();
+  chart.update("none");
 }
 
 function drawDonutChart(taskId, optionMap) {
@@ -706,7 +706,6 @@ function drawDonutChart(taskId, optionMap) {
     chart.setActiveElements([{ datasetIndex: 0, index: i }]);
     //chart.tooltip.setActiveElements([{ datasetIndex: 0, index: i }], { x: 0, y: 0 });
     focusSlice(chart, baseColors, i);
-    chart.update();
     
   });
 
@@ -715,7 +714,6 @@ function drawDonutChart(taskId, optionMap) {
     chart.setActiveElements([]);
     //chart.tooltip.setActiveElements([], { x: 0, y: 0 });
     clearFocus(chart, baseColors);
-    chart.update();
   });
 }
 
