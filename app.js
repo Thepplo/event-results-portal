@@ -646,20 +646,19 @@ function drawDonutChart(taskId, optionMap) {
     options: {
       responsive: true,
       maintainAspectRatio: false,
+
       animation: {
         duration: 600,
         easing: "easeOutQuad",
       },
-      hover: {
-          animationDuration: 150
+
+      animations: {
+        colors: {
+          duration: 150
         },
-      colors: {
-        duration: 150,
-        easing: "easeOutQuad"
-      },
-      numbers: {
-        duration: 150,
-        easing: "easeOutQuad"
+        numbers: {
+          duration: 150
+        }
       },
       plugins: {
         legend: { display: false },
