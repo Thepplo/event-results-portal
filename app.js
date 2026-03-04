@@ -732,12 +732,11 @@ async function fetchResults({ gameId, teamId }) {
   url.searchParams.set("gameId", gameId);
   if (teamId) url.searchParams.set("teamId", teamId);
   url.searchParams.set("includeAnswers", "true");
-  url.searchParams.set("scope", "default");
+  //url.searchParams.set("scope", "default");
 
   const resp = await fetch(url.toString(), { method: "GET" });
   const text = await resp.text();
-  console.log(url.toString());
-  
+
   let data;
   try { data = JSON.parse(text); }
   catch { throw new Error(`Non-JSON response (${resp.status}): ${text.slice(0, 200)}`); }
