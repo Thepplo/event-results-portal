@@ -653,6 +653,14 @@ function drawDonutChart(taskId, optionMap) {
       hover: {
           animationDuration: 150
         },
+      colors: {
+        duration: 150,
+        easing: "easeOutQuad"
+      },
+      numbers: {
+        duration: 150,
+        easing: "easeOutQuad"
+      },
       plugins: {
         legend: { display: false },
         datalabels: {
