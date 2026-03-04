@@ -48,7 +48,7 @@
 body {
   font-family: "Montserrat", sans-serif; 
   background: linear-gradient(180deg, var(--bg-top), var(--bg-bottom));
-  min-height: 100vh;
+  /* min-height: 100vh; */
   margin: 0;
   /*background-image: url("Benjamin_Olszewski-8898\ 1.png");
   background-repeat: no-repeat;
@@ -256,6 +256,27 @@ body {
   overflow: hidden;
   box-shadow: var(--shadow-card);
 
+}
+
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  background: url("/assets/Benjamin_Olszewski-8898\ 1.png") cover no-repeat;
+}
+
+.login-page::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.5);
+}
+
+.login-card {
+  position: relative;
+  z-index: 1;
 }
 
 .login-card {
