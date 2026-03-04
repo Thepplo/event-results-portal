@@ -126,6 +126,11 @@ body {
   font-weight: 700;
 }
 
+.legend-row--top .legend-value {
+  font-weight: 700;
+}
+
+
 .legend-row--top .legend-color {
   box-shadow:
     0 0 0 2px var(--legend-color),
@@ -145,9 +150,9 @@ body {
   font-weight: 500;
 }
 
-.legend-value {
+/* .legend-value {
   font-weight: 600;
-}
+} */
 
 .legend-count {
   opacity: 0.6;

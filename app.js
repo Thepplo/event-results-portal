@@ -890,15 +890,6 @@ async function run() {
 
     ${renderDonutCharts(teams, DONUT_TASK_IDS)} 
 
-    <div class="card" data-chart="barCorrect">
-      <div class="card-header">
-        <h2>Points per person</h2>
-        <div class="card-meta muted">Top 5</div>
-        </div>
-      <div class="chart-box">
-        <canvas id="barCorrect"></canvas>
-      </div>
-    </div>
 
     <div class="card" data-chart="satChart">
       <div class="card-header">
@@ -913,6 +904,16 @@ async function run() {
     <div class="card" data-chart="wordCloud">
       <h2>One-word experience</h2>
       <canvas id="wordCloudCanvas" style="height: 500px; max-height: 500px; width: 100%;"></canvas>
+    </div>
+    
+    <div class="card" data-chart="barCorrect">
+      <div class="card-header">
+        <h2>Points per person</h2>
+        <div class="card-meta muted">Top 5</div>
+        </div>
+      <div class="chart-box">
+        <canvas id="barCorrect"></canvas>
+      </div>
     </div>
   `;
 
