@@ -283,7 +283,10 @@ body {
 
 .login-header {
   gap: 5px;
-  font-family: "q5-heading-slim", sans-serif;
+  text-transform: capitalize;
+  font-family: "q5-heading", sans-serif;
+  display: flex;
+  flex-direction: column;
 }
 .login-card {
   position: relative;
