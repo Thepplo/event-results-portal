@@ -596,13 +596,19 @@ function withAlpha(color, alpha) {
 }
 
 function focusSlice(chart, baseColors, activeIndex) {
-  const dimmed = baseColors.map((c, i) => (i === activeIndex ? c : withAlpha(c, 0.35)));
+  chart.$activeSlice = activeIndex;
+
+  const dimmed = baseColors.map((c, i) =>
+    i === activeIndex ? c : withAlpha(c, 0.35)
+  );
+
   chart.data.datasets[0].backgroundColor = dimmed;
   chart.update();
 }
 
 
 function clearFocus(chart, baseColors) {
+  chart.$activeSlice = null;
   chart.data.datasets[0].backgroundColor = baseColors.slice();
   chart.update();
 }
@@ -650,10 +656,23 @@ function drawDonutChart(taskId, optionMap) {
       plugins: {
         legend: { display: false },
         datalabels: {
-          color: "#ffffff",
+          color: (ctx) =>{
+            const active = ctx.chart.$activeSlice;
+            if (active == null) return "#ffffff";
+            return ctx.dataIndex === active
+              ? "#ffffff"
+              : "rgba(255,255,255,0.35)";
+
+            },
           textShadowColor: "rgba(0,0,0,0.4)",
           textShadowBlur: 4,
-          font: { weight: "600", size: 14 },
+          font: (ctx) => {
+            const active = ctx.chart.$activeSlice;
+            return {
+              weight: "600",
+              size: active === ctx.dataIndex ? 16 : 14
+            };
+          },
           formatter: (value, context) => {
             const data = context.chart.data.datasets[0].data;
             const total = data.reduce((a, b) => a + b, 0);
