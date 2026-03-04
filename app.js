@@ -596,21 +596,15 @@ function withAlpha(color, alpha) {
 }
 
 function focusSlice(chart, baseColors, activeIndex) {
-  chart.$activeSlice = activeIndex;
-
-  const dimmed = baseColors.map((c, i) =>
-    i === activeIndex ? c : withAlpha(c, 0.35)
-  );
-
+  const dimmed = baseColors.map((c, i) => (i === activeIndex ? c : withAlpha(c, 0.35)));
   chart.data.datasets[0].backgroundColor = dimmed;
-  chart.update("active");
+  chart.update();
 }
 
 
 function clearFocus(chart, baseColors) {
-  chart.$activeSlice = null;
   chart.data.datasets[0].backgroundColor = baseColors.slice();
-  chart.update("active");
+  chart.update();
 }
 
 function drawDonutChart(taskId, optionMap) {
@@ -647,23 +641,16 @@ function drawDonutChart(taskId, optionMap) {
       responsive: true,
       maintainAspectRatio: false,
       animation: {
-        duration: 1000,
-        easing: "easeOutQuad"
+        duration: 600,
+        easing: "easeOutQuad",
       },
-      animations: {
-        colors: { duration: 150 }
-      },
+      hover: {
+          animationDuration: 150
+        },
       plugins: {
         legend: { display: false },
         datalabels: {
-          color: (ctx) =>{
-            const active = ctx.chart.$activeSlice;
-            if (active == null) return "#ffffff";
-            return ctx.dataIndex === active
-              ? "#ffffff"
-              : "rgba(255,255,255,0.35)";
-
-            },
+          color: "#ffffff",
           textShadowColor: "rgba(0,0,0,0.4)",
           textShadowBlur: 4,
           font: { weight: "600", size: 14 },
@@ -706,6 +693,7 @@ function drawDonutChart(taskId, optionMap) {
     chart.setActiveElements([{ datasetIndex: 0, index: i }]);
     //chart.tooltip.setActiveElements([{ datasetIndex: 0, index: i }], { x: 0, y: 0 });
     focusSlice(chart, baseColors, i);
+    chart.update();
     
   });
 
@@ -714,6 +702,7 @@ function drawDonutChart(taskId, optionMap) {
     chart.setActiveElements([]);
     //chart.tooltip.setActiveElements([], { x: 0, y: 0 });
     clearFocus(chart, baseColors);
+    chart.update();
   });
 }
 
