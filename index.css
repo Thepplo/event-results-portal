@@ -217,8 +217,8 @@ body {
 
 
 .card {
-  opacity: 0;
-  transform: translateY(6px);
+  opacity: 0.5;
+  transform: translateY(15px);
   background:
       linear-gradient(
       to bottom,
