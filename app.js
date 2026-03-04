@@ -732,7 +732,7 @@ async function fetchResults({ gameId, teamId }) {
   url.searchParams.set("gameId", gameId);
   if (teamId) url.searchParams.set("teamId", teamId);
   url.searchParams.set("includeAnswers", "true");
-  url.searchParams.set("scope", "default");
+  url.searchParams.set("scope", "test");
 
   const resp = await fetch(url.toString(), { method: "GET" });
   const text = await resp.text();
