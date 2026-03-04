@@ -18,22 +18,22 @@
       <!-- <div class="header-text">AndQFIVE</div> -->
     <h1>GAME RESULTS</h1>
     </div>
-
-    <div class="login-card" id="login-card">
-      <img src ="assets/public/icons/login-enter.svg" style = "color:#ffda33"/>
-      <div class="row">
-        <div class="input-div">
-          <p>Game ID*</p>
-        <input id="gameIdInput" placeholder="gameId (required)" class="input-field"/>
+    <div class="login-page">
+      <div class="login-card" id="login-card">
+        <img src ="assets/public/icons/login-enter.svg" style = "color:#ffda33"/>
+        <div class="row">
+          <div class="input-div">
+            <p>Game ID*</p>
+          <input id="gameIdInput" placeholder="gameId (required)" class="input-field"/>
+          </div>
+          <div class="input-div">
+            <p>Team ID (optional)</p>
+          <input id="teamIdInput" placeholder="teamId (optional)" class="input-field"/>
+          </div>
         </div>
-        <div class="input-div">
-          <p>Team ID (optional)</p>
-        <input id="teamIdInput" placeholder="teamId (optional)" class="input-field"/>
-        </div>
+        <button id="loadBtn" class="btn-primary">Load</button>
       </div>
-      <button id="loadBtn" class="btn-primary">Load</button>
     </div>
-
     <!-- <div id="app" class="muted">Loading…</div> -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-datalabels@2"></script>
