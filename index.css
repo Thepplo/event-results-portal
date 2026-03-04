@@ -259,7 +259,7 @@ body {
 }
 
 .login-card {
-    width: fit-content; 
+    width: 28rem; 
     background-color: var(--surface);
     border: 1px solid var(--border); 
     border-radius: 12px; 
@@ -326,6 +326,7 @@ h2 {
     display: inline-flex;
     width: 100%;
     align-items: center;
+    justify-content: center;
     gap: 0.5rem;
     padding: 0.5rem 1rem;
     background-color: rgb(var(--primary));
@@ -339,7 +340,8 @@ h2 {
     cursor: pointer;
 }
 
-.row { 
+.row {
+    width: 100%;
     display: flex; 
     gap: 8px; 
     flex-wrap: wrap; 
@@ -353,4 +355,27 @@ h2 {
 .chart-box canvas {
   width: 100% !important;
   height: 100% !important;
+}
+
+.btn-primary {
+  width: 100%;
+  background-color: #ffda33;
+  color: var(--text);
+  font-weight: 600;
+  padding: 0.75rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+.btn-primary:hover {
+  background-color: #f8d01d;
+}
+
+.btn-primary:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
