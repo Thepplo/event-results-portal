@@ -788,30 +788,33 @@ function setupLazyChartDrawing({ teams, ratingCounts, wordCounts, donutTaskIds }
     ["wordCloud", () => drawWordCloud(wordCounts)],
   ]);
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      for (const entry of entries) {
-        if (!entry.isIntersecting) continue;
+  const observer = new IntersectionObserver((entries) => {
+    for (const entry of entries) {
+      const el = entry.target;
 
-        const el = entry.target;
-        const key = el.getAttribute("data-chart");
-        const draw = drawers.get(key);
-
-        if (draw && !el.dataset.drawn) {
-          el.dataset.drawn = "1";
-          draw();
-        }
-
-        observer.unobserve(el);
+      if (entry.isIntersecting) {
+        el.classList.add("is-visible");
       }
-    },
-    {
-      root: null,
-      rootMargin: "-100px 0px",
-      threshold: 0.4,
-    }
-  );
 
+      if (!entry.isIntersecting) continue;
+
+      const key = el.getAttribute("data-chart");
+      const draw = drawers.get(key);
+
+      if (draw && !el.dataset.drawn) {
+        el.dataset.drawn = "1";
+        draw();
+      }
+
+      observer.unobserve(el);
+    }
+  }, {
+    root: null,
+    rootMargin: "0px 0px -80px 0px",
+    threshold: 0.2,
+  });
+
+  document.querySelectorAll(".card").forEach((el) => observer.observe(el));
   document.querySelectorAll("[data-chart]").forEach((el) => observer.observe(el));
 }
 

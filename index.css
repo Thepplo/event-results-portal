@@ -216,7 +216,9 @@ body {
 
 
 
-.card { 
+.card {
+  opacity: 0;
+  transform: translateY(6px);
   background:
       linear-gradient(
       to bottom,
@@ -238,7 +240,18 @@ body {
   text-align: left;
   max-height: 800px;
   min-height: 500px;
+  transition: opacity 180ms ease, transform 180ms ease;
 }
+
+.card.is-visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .card { transition: none; transform: none; opacity: 1; }
+}
+
 .donut-card { 
   background-color: var(--surface);
   border: 1px solid var(--border); 
