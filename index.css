@@ -360,7 +360,7 @@ h2 {
 .btn-primary {
   width: 100%;
   background-color: #ffda33;
-  color: var(--text);
+  color: black;
   font-weight: 600;
   padding: 0.75rem 1rem;
   border-radius: 0.5rem;
@@ -369,6 +369,7 @@ h2 {
   align-items: center;
   justify-content: center;
   gap: 0.5rem;
+  border: #ffda33;
 }
 
 .btn-primary:hover {
