@@ -322,6 +322,12 @@ h2 {
     box-shadow: 0 0 0 1px  rgb(var(--primary));
 }
 
+.input-div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
 .button {
     display: inline-flex;
     width: 100%;
