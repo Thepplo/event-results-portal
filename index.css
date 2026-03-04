@@ -45,7 +45,10 @@
   font-family: "q5-heading";
   src: url("./assets/fonts/AndQFive_Headlinefont_SiteHead.ttf") format("truetype");
 }
-
+@font-face {
+  font-family: "q5-heading-slim";
+  src: url("./assets/fonts/AndQFive_Headlinefont_Thin.ttf") format("truetype");
+}
 
 body {
   font-family: "Montserrat", sans-serif; 
@@ -278,6 +281,10 @@ body {
   background: rgba(0,0,0,0.5);
 }
 
+.login-header {
+  gap: 5px;
+  font-family: "q5-heading-slim", sans-serif;
+}
 .login-card {
   position: relative;
   z-index: 1;
@@ -324,7 +331,7 @@ h2 {
     margin: 0 0 12px 0;
 }
 .input-field {
-  padding: 1rem 1.5rem 1rem 1.5rem;
+  padding: 0.8rem 1.3rem 0.8rem 1.3rem;
   background-color: var(--surface-2);
   border: 1px solid var(--border);
   color: var(--text);
