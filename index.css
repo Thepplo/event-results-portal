@@ -259,7 +259,7 @@ body {
 }
 
 .login-card {
-  width: 22rem; 
+  width: 25rem; 
   background-color: var(--surface);
   border: 1px solid var(--border); 
   border-radius: 12px; 
@@ -301,7 +301,7 @@ h2 {
     margin: 0 0 12px 0;
 }
 .input-field {
-  padding: 0.5rem 1rem 0.5rem 1rem;
+  padding: 1rem 1.5rem 1rem 1.5rem;
   background-color: var(--surface-2);
   border: 1px solid var(--border);
   color: var(--text);
@@ -322,6 +322,7 @@ h2 {
 }
 
 .input-div {
+  width: 100%;
   display: flex;
   flex-direction: column;
   gap: 0.2rem;
