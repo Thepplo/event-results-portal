@@ -732,11 +732,12 @@ async function fetchResults({ gameId, teamId }) {
   url.searchParams.set("gameId", gameId);
   if (teamId) url.searchParams.set("teamId", teamId);
   url.searchParams.set("includeAnswers", "true");
-  url.searchParams.set("scope", "test");
+  url.searchParams.set("scope", "default");
 
   const resp = await fetch(url.toString(), { method: "GET" });
   const text = await resp.text();
-
+  console.log(url.toString());
+  
   let data;
   try { data = JSON.parse(text); }
   catch { throw new Error(`Non-JSON response (${resp.status}): ${text.slice(0, 200)}`); }
@@ -745,6 +746,7 @@ async function fetchResults({ gameId, teamId }) {
     throw new Error(`API error (${resp.status}): ${JSON.stringify(data)}`);
   }
   return data;
+
 }
 
 function renderTeam(team) {
