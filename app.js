@@ -603,14 +603,14 @@ function focusSlice(chart, baseColors, activeIndex) {
   );
 
   chart.data.datasets[0].backgroundColor = dimmed;
-  chart.update("none");
+  chart.update("active");
 }
 
 
 function clearFocus(chart, baseColors) {
   chart.$activeSlice = null;
   chart.data.datasets[0].backgroundColor = baseColors.slice();
-  chart.update("none");
+  chart.update("active");
 }
 
 function drawDonutChart(taskId, optionMap) {
@@ -648,11 +648,11 @@ function drawDonutChart(taskId, optionMap) {
       maintainAspectRatio: false,
       animation: {
         duration: 1000,
-        easing: "easeOutQuad",
+        easing: "easeOutQuad"
       },
-      hover: {
-          animationDuration: 150
-        },
+      animations: {
+        colors: { duration: 150 }
+      },
       plugins: {
         legend: { display: false },
         datalabels: {
