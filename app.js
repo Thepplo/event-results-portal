@@ -886,7 +886,9 @@ async function run() {
 
     return;
   }
-  loginCard.style.display = "none"; 
+  loginPage.style.display = "none";
+
+  loginCard.style.display = "none";
 
   const { ratingCounts, wordCounts } = aggregateMixedTask(teams);
 
