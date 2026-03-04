@@ -286,7 +286,7 @@ function drawAnswersScoreBarChart(teams) {
         x: {
           ticks: {
             color: "#F3EDEE",
-            font: { size: 13, weight: "600", family: "Montserrat, sans-serif" },
+            font: { size: 15, weight: "600", family: "Montserrat, sans-serif" },
           }
         }
       },
@@ -905,7 +905,7 @@ async function run() {
       <h2>One-word experience</h2>
       <canvas id="wordCloudCanvas" style="height: 500px; max-height: 500px; width: 100%;"></canvas>
     </div>
-    
+
     <div class="card" data-chart="barCorrect">
       <div class="card-header">
         <h2>Points per person</h2>
