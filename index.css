@@ -265,7 +265,7 @@ body {
 
 .login-page {
   min-height: calc(100dvh - var(--header-h));
-  display: flex;
+  display: none;
   align-items: center;
   justify-content: center;
   position: relative;

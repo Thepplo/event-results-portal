@@ -845,6 +845,8 @@ async function run() {
   const gameId = params.get("gameId");
   const teamId = params.get("teamId");
   const loginCard = document.getElementById("login-card");
+  const loginPage = document.getElementById("login-page");
+
   const loadBtn = document.getElementById("loadBtn");
 
   if (!loadBtn.dataset.bound) {
@@ -859,6 +861,7 @@ async function run() {
   }
 
   if (!gameId) {
+    loginPage.style.display = "flex";
     loginCard.style.display = "flex";
     return;
   }
@@ -870,6 +873,7 @@ async function run() {
       app.textContent = "No team found for that game/team.";
       return;
     }
+    loginPage.style.display = "none";
     loginCard.style.display = "none";
     app.innerHTML = renderTeam(data.team);
 
