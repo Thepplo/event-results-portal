@@ -406,7 +406,7 @@ function drawWordCloud(wordCounts, topN = 30) {
   const maxCount = Math.max(...data);
   const scaledData = data.map(c => {
     const t = Math.sqrt(c / maxCount);
-    return 16 + t * 64;
+    return 12 + t * 48;
   });
   const colors = data.map(c => {
     const t = c / maxCount;
