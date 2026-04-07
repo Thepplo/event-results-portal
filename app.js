@@ -410,7 +410,7 @@ function drawWordCloud(wordCounts, topN = 30) {
   });
   const colors = data.map(c => {
     const t = c / maxCount;
-    const a = 0.55 + t * 0.45;
+    const a = 0.54 + t * 0.45;
     return `rgba(255,255,255,${a.toFixed(3)})`;
   });
 
